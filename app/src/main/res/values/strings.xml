@@ -3,4 +3,7 @@
     <string name="home">Home</string>
     <string name="calendar">Calendar</string>
     <string name="profile">Profile</string>
+    <string name="app_logo">App Logo</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
