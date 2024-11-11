@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.gymapp.ui.theme.GymAppTheme
 import com.example.gymapp.ui.footer.Footer
 import com.example.gymapp.ui.header.Header
+import com.example.gymapp.ui.login.Login
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GymAppTheme {
-                Header("Home")
+                Login()
             }
         }
     }
