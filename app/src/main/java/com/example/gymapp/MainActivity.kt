@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gymapp.ui.theme.GymAppTheme
-import com.example.gymapp.ui.theme.footer.Footer
+import com.example.gymapp.ui.footer.Footer
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
