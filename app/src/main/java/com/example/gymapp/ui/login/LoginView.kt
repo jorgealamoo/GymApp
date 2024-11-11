@@ -45,12 +45,12 @@ fun Login(){
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .background(GymRed),
+            .background(White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_foreground),
+            painter = painterResource(id = R.drawable.gymapplogo),
             contentDescription = R.string.app_logo.toString(),
             modifier = Modifier.size(140.dp)
         )
