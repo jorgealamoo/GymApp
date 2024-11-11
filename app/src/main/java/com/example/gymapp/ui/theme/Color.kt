@@ -10,7 +10,7 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val GymRed = Color(0xFFFF8E76)
+val GymRed = Color(0xFFFF5733)
 val GymOrange = Color(0xFFFF8D1A)
 val GymYellow = Color(0xFFFFC300)
 val GymBlack = Color(0xFF333333)
