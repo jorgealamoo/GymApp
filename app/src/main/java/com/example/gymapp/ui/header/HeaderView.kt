@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +36,7 @@ fun Header(title : String = "Se te olvida el titulo paleto"){
             .background(Color.White.copy(alpha = 0.5f))
             .fillMaxWidth()
             .padding(10.dp),
-        horizontalArrangement = Arrangement.Absolute.Left,
+        horizontalArrangement = Arrangement.Absolute.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
         Icon(
@@ -43,18 +45,18 @@ fun Header(title : String = "Se te olvida el titulo paleto"){
             modifier = Modifier.size(40.dp)
                 .clickable {  println("Hola mundo") }
         )
-
+        Spacer(modifier = Modifier.weight(1f))
         Text(
-            modifier = Modifier.padding(start = 20.dp),
+            modifier = Modifier
+                .padding(end = 40.dp),
             style = TextStyle(
                 fontSize = 24.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = GymRed
             ),
             text = title
-
-
         )
+        Spacer(modifier = Modifier.weight(1f))
     }
 }
 
@@ -62,6 +64,6 @@ fun Header(title : String = "Se te olvida el titulo paleto"){
 @Composable
 fun HeaderPreView(){
     GymAppTheme {
-        Header()
+        Header("Home")
     }
 }
