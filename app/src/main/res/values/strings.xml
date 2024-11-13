@@ -9,4 +9,6 @@
     <string name="password">Password</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="login">Login</string>
+    <string name="gym_name">Gym Name</string>
+    <string name="points">Points</string>
 </resources>

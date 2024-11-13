@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.gymapp.ui.card.Card
 import com.example.gymapp.ui.theme.GymAppTheme
 import com.example.gymapp.ui.footer.Footer
 import com.example.gymapp.ui.header.Header
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GymAppTheme {
-                Login()
+                Card(1456)
             }
         }
     }
