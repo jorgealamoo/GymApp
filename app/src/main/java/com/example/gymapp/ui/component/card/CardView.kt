@@ -1,4 +1,4 @@
-package com.example.gymapp.ui.card
+package com.example.gymapp.ui.component.card
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
