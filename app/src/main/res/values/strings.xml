@@ -12,5 +12,12 @@
     <string name="gym_name">Gym Name</string>
     <string name="points">Points</string>
     <string name="spots">spots available</string>
+    <string name="title">Title</string>
+    <string name="email">Email</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="enrollment_date">Enrollment Date</string>
+    <string name="current_expiration">Current Enrollment Expiration</string>
+    <string name="change_password">Change password</string>
+    <string name="profile_image">Profile image</string>
 
 </resources>

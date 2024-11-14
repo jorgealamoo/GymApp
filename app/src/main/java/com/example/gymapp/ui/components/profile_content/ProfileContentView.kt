@@ -10,10 +10,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gymapp.R
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
@@ -22,7 +24,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun ProfileContent(title: String = "Title", content: Any = "Content"){
+fun ProfileContent(title: Int = R.string.title, content: Any = "Content"){
     val contentText = when (content) {
         is String -> content
         is Date -> SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(content)
@@ -44,7 +46,7 @@ fun ProfileContent(title: String = "Title", content: Any = "Content"){
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = title,
+            text = stringResource(id = title),
             color = GymRed,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold,
