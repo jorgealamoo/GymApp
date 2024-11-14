@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +27,7 @@ import com.example.gymapp.ui.theme.GymAppTheme
 import com.example.gymapp.ui.theme.GymRed
 
 @Composable
-fun Header(title : String = "Se te olvida el titulo paleto"){
+fun Header(title : Int = R.string.spots){
     Row (
         modifier =  Modifier
             .background(Color.White.copy(alpha = 0.5f))
@@ -50,7 +51,7 @@ fun Header(title : String = "Se te olvida el titulo paleto"){
                 fontWeight = FontWeight.ExtraBold,
                 color = GymRed
             ),
-            text = title
+            text = stringResource(id = title)
         )
         Spacer(modifier = Modifier.weight(1f))
     }
@@ -60,6 +61,6 @@ fun Header(title : String = "Se te olvida el titulo paleto"){
 @Composable
 fun HeaderPreView(){
     GymAppTheme {
-        Header("Home")
+        Header()
     }
 }
