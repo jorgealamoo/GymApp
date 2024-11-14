@@ -1,4 +1,4 @@
-package com.example.gymapp.ui.footer
+package com.example.gymapp.ui.component.footer
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
