@@ -44,7 +44,7 @@ fun Profile(
     birthdate: String,
     enrollmentDate: String,
     currentEnrollmentExpiration: String,
-    profileImage: Painter = painterResource(id = R.drawable.user)
+    profileImage: Int = R.drawable.user
     ) {
     Box(
         modifier = Modifier
@@ -102,7 +102,7 @@ fun Profile(
 }
 
 @Composable
-fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: Painter = painterResource(id = R.drawable.user)) {
+fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: Int = R.drawable.user) {
     val maxSurnameLength = 15
     val displayedSurname = if (surname.length > maxSurnameLength) {
         surname.take(maxSurnameLength) + "..."
@@ -139,7 +139,7 @@ fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: P
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = profileImage,
+            painter = painterResource(profileImage),
             contentDescription = stringResource(R.string.profile_image),
             modifier = Modifier.size(125.dp).padding(0.dp, 0.dp, 25.dp)
         )
