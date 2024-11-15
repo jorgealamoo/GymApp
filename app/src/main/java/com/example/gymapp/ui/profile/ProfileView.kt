@@ -1,8 +1,8 @@
 package com.example.gymapp.ui.profile
 
-import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,13 +10,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,53 +27,89 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.R
+import com.example.gymapp.ui.components.footer.Footer
 import com.example.gymapp.ui.components.header.Header
 import com.example.gymapp.ui.components.profile_content.ProfileContent
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
-fun Profile() {
-    Column(
+fun Profile(
+    name: String,
+    surname: String,
+    email: String,
+    birthdate: String,
+    enrollmentDate: String,
+    currentEnrollmentExpiration: String,
+    profileImage: Painter = painterResource(id = R.drawable.user)
+    ) {
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(GymRed),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .background(White)
     ) {
-        Header(title = R.string.profile)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        UserInfo()
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ProfileContent(title = R.string.email)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ProfileContent(title = R.string.birthdate)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ProfileContent(title = R.string.enrollment_date)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        ProfileContent(title = R.string.current_expiration)
-
-        Spacer(modifier = Modifier.height(25.dp))
-
-        Text(
-            text = stringResource(R.string.change_password),
-            fontSize = 22.sp,
-            textDecoration = TextDecoration.Underline
+        Image(
+            painter = painterResource(id = R.drawable.background),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier
+                .matchParentSize()
+                .graphicsLayer(alpha = 0.6f)
         )
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Header(title = R.string.profile)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            UserInfo(name, surname, profileImage)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            ProfileContent(title = R.string.email, email)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            ProfileContent(title = R.string.birthdate, birthdate)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            ProfileContent(title = R.string.enrollment_date, enrollmentDate)
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            ProfileContent(title = R.string.current_expiration, currentEnrollmentExpiration)
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            Text(
+                text = stringResource(R.string.change_password),
+                fontSize = 22.sp,
+                textDecoration = TextDecoration.Underline
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Footer()
+        }
     }
 }
 
 @Composable
-fun UserInfo(name: String = "Name", surname: String = "Surname") {
+fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: Painter = painterResource(id = R.drawable.user)) {
+    val maxSurnameLength = 15
+    val displayedSurname = if (surname.length > maxSurnameLength) {
+        surname.take(maxSurnameLength) + "..."
+    } else {
+        surname
+    }
+
     Row(
         modifier = Modifier
             .size(350.dp, 120.dp)
@@ -92,8 +130,8 @@ fun UserInfo(name: String = "Name", surname: String = "Surname") {
             Spacer(modifier = Modifier.height(5.dp))
 
             Text(
-                text = surname,
-                fontSize = 24.sp,
+                text = displayedSurname,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -101,17 +139,22 @@ fun UserInfo(name: String = "Name", surname: String = "Surname") {
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = painterResource(id = R.drawable.user),
+            painter = profileImage,
             contentDescription = stringResource(R.string.profile_image),
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(125.dp).padding(0.dp, 0.dp, 25.dp)
         )
-
-        Spacer(modifier = Modifier.weight(0.3f))
     }
 }
 
 @Composable
 @Preview
 fun ProfilePreview() {
-    Profile()
+    Profile(
+        name = "Name",
+        surname = "Tengo Un Apellido Muy Largo",
+        email = "email@email.com",
+        birthdate = "20/09/2001",
+        enrollmentDate = "01/03/2023",
+        currentEnrollmentExpiration = "01/12/2024"
+    )
 }

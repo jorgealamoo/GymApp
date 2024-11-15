@@ -25,7 +25,7 @@ fun Footer(iconSize: Dp = 70.dp) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(GymRed),
+            .background(GymRed.copy(0.6f)),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Icon(
