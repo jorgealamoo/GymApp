@@ -21,9 +21,9 @@ import com.example.gymapp.R
 import com.example.gymapp.ui.theme.GymRed
 
 @Composable
-fun Footer(iconSize: Dp = 70.dp) {
+fun Footer(modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(GymRed.copy(0.6f)),
         horizontalArrangement = Arrangement.SpaceEvenly

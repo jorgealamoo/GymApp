@@ -2,6 +2,7 @@
     <string name="menu">Menu</string>
     <string name="app_name">GymApp</string>
     <string name="home">Home</string>
+    <string name="Activity">Activities</string>
     <string name="calendar">Calendar</string>
     <string name="profile">Profile</string>
     <string name="app_logo">App Logo</string>
