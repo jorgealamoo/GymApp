@@ -135,7 +135,6 @@ fun Login(){
                     color = White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-
                 )
             }
 

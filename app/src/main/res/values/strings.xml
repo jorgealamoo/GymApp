@@ -22,6 +22,19 @@
     <string name="profile_image">Profile image</string>
     <string name="loren_ipsum">Loren Ipsum</string>
     <string name="lpgc_u_know">Las Palmas de Gran Canaria</string>
-    <string name="schedule">Schedule</string>
+    <string name="schedule">Schedule:</string>
+    <string name="coach">Coach:</string>
+    <string name="big_loren_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt.</string>
+    <string name="bigger_loren_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin molestie arcu ac mi consequat aliquet. Duis mauris sem, placerat in est eget, gravida dignissim eros. Cras et massa eget lorem efficitur ultrices. Etiam mattis ligula sed urna bibendum, ac tempor enim tincidunt.</string>
+    <string name="room">Room:</string>
+    <string name="description">Description:</string>
+    <string name="book">BOOK</string>
+    <string name="close">Close</string>
+    <string name="completed">Completed</string>
+    <string name="abs">Abs</string>
+    <string name="legs">Legs</string>
+    <string name="chest">Chest</string>
+    <string name="arms">Arms</string>
+    <string name="back">Back</string>
 
 </resources>
