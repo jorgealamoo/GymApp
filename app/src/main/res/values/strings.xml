@@ -30,5 +30,11 @@
     <string name="description">Description:</string>
     <string name="book">BOOK</string>
     <string name="close">Close</string>
+    <string name="completed">Completed</string>
+    <string name="abs">Abs</string>
+    <string name="legs">Legs</string>
+    <string name="chest">Chest</string>
+    <string name="arms">Arms</string>
+    <string name="back">Back</string>
 
 </resources>

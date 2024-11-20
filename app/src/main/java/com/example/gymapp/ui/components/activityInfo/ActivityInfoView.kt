@@ -13,11 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -64,19 +61,6 @@ fun ActivityInfo(activityTitle: Int,
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
-
-        IconButton(
-            onClick = { println("Close") },
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(20.dp)
-        ) {
-            Image(
-                painter = painterResource(R.drawable.close),
-                contentDescription = stringResource(R.string.close),
-                modifier = Modifier.size(38.dp)
-            )
-        }
 
         Column(
             modifier = Modifier
@@ -130,7 +114,18 @@ fun ActivityInfo(activityTitle: Int,
             ActivityDescription(description)
         }
 
-
+        IconButton(
+            onClick = { println("Close") },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(20.dp)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.close),
+                contentDescription = stringResource(R.string.close),
+                modifier = Modifier.size(38.dp)
+            )
+        }
 
         Button(
             onClick = { println("Booked") },
