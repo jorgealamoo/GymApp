@@ -19,9 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.components.DrawerContent.DrawerContent
+import com.example.gymapp.ui.components.footer.Footer
 import com.example.gymapp.ui.components.header.Header
 import com.example.gymapp.ui.theme.GymAppTheme
 import com.example.gymapp.ui.profile.Profile
+import com.example.gymapp.ui.templateComponente
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -29,46 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MainScreen()
-        }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun MainScreen() {
-        // Estado del Drawer
-        val drawerState = rememberDrawerState(DrawerValue.Closed)
-        val scope = rememberCoroutineScope()
-
-        ModalNavigationDrawer (
-            drawerState = drawerState,
-            drawerContent = {
-                DrawerContent { option ->
-                    println("Seleccionaste: $option")
-                    scope.launch { drawerState.close() } // Cierra el drawer al seleccionar una opción
-                }
-            },
-            gesturesEnabled = true // Permite cerrarlo deslizando hacia la derecha
-        ) {
-            // Contenido principal de la pantalla
-            Scaffold(
-                topBar = {
-                    Header(
-                        title = R.string.loren_ipsum,
-                        onMenuClick = { scope.launch { drawerState.open() } } // Abre el drawer al pulsar el icono
-                    )
-                },
-                content = { paddingValues ->
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(paddingValues),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text("Contenido principal")
-                    }
-                }
-            )
+            templateComponente(R.string.home)
         }
     }
 

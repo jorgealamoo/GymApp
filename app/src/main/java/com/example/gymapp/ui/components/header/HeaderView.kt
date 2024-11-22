@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -40,6 +41,7 @@ import com.example.gymapp.R
 import com.example.gymapp.ui.components.footer.Footer
 import com.example.gymapp.ui.theme.GymAppTheme
 import com.example.gymapp.ui.theme.GymRed
+import com.example.gymapp.ui.theme.YellowHeader
 
 @Composable
 fun Header(
@@ -51,11 +53,12 @@ fun Header(
     Column {
         Row(
             modifier = Modifier
-                .background(Color.White.copy(alpha = 0.5f))
+                .background(YellowHeader)
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(10.dp)
+                .statusBarsPadding(),
             horizontalArrangement = Arrangement.Absolute.Center,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Icono que despliega el menú
             Box {

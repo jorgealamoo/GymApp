@@ -38,11 +38,11 @@ import com.example.gymapp.ui.theme.White
 
 
 @Composable
-fun Activity(){
+fun Activity(modifier: Modifier = Modifier){
     val scrollState = rememberScrollState()
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(White)
     ) {
@@ -62,10 +62,8 @@ fun Activity(){
             horizontalAlignment = Alignment.CenterHorizontally
 
         ){
-            Header(title = R.string.Activity)
             WeekDaysSelector()
             insertActivity()
-            Footer()
         }
     }
 }

@@ -37,5 +37,6 @@
     <string name="arms">Arms</string>
     <string name="back">Back</string>
     <string name="week">Week </string>
+    <string name="logOut">LogOut</string>
 
 </resources>
