@@ -38,5 +38,6 @@
     <string name="back">Back</string>
     <string name="week">Week </string>
     <string name="logOut">LogOut</string>
+    <string name="leg_press">Leg Press</string>
 
 </resources>
