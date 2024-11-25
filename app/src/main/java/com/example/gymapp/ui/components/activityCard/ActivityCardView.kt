@@ -3,6 +3,7 @@ package com.example.gymapp.ui.components.activityCard
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,14 @@ import com.example.gymapp.ui.theme.GymOrange
 
 @Composable
 fun ActivityCardView (image:Int = R.drawable.image_removebg_preview, hora: String = "00/00", totalCapacity: Int = 0, ability: Int = 0,
-                      exerciseClass: String ="Invalid exercise", studio: String = "Studio X") {
+                      exerciseClass: String ="Invalid exercise", studio: String = "Studio X",content: @Composable () -> Unit = {}) {
     Box(
         modifier = Modifier
             .width(315.dp)
             .height(122.dp)
             .clip(RoundedCornerShape(25.dp))
-            .background(color = White.copy(alpha = 0.67f)),
+            .background(color = White.copy(alpha = 0.67f))
+            .clickable(onClick = {content}),
         contentAlignment = Alignment.CenterStart,
     ){
         Row (
