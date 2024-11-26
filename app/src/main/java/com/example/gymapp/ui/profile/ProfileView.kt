@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.ui.Activities.ContentActivity
 import com.example.gymapp.ui.components.DrawerContent.DrawerContent
@@ -46,12 +47,13 @@ import java.util.Locale
 
 @Composable
 fun Profile(
-    name: String = R.string.loren_ipsum.toString(),
-    surname: String = R.string.loren_ipsum.toString(),
-    email: String = R.string.loren_ipsum.toString(),
-    birthdate: String = R.string.loren_ipsum.toString(),
-    enrollmentDate: String = R.string.loren_ipsum.toString(),
-    currentEnrollmentExpiration: String = R.string.loren_ipsum.toString(),
+    name: String = "Prueba",
+    surname: String = "Prueba",
+    email: String = "Prueba@gmail.com",
+    birthdate: String = "11/06/1942",
+    enrollmentDate: String = "11/06/1972",
+    currentEnrollmentExpiration: String = "11/06/1973",
+    navController: NavController,
     profileImage: Int = R.drawable.user,
 ){
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -82,11 +84,12 @@ fun Profile(
                     birthdate = birthdate,
                     enrollmentDate = enrollmentDate,
                     currentEnrollmentExpiration = currentEnrollmentExpiration,
-                    profileImage = R.drawable.user,
+                    profileImage = profileImage,
+                    navController = navController,
                     modifier = Modifier.padding(paddingValues))
             },
             bottomBar = {
-                Footer()
+                Footer(navController = navController)
             }
         )
     }
@@ -100,6 +103,7 @@ fun ContentProfile(
     enrollmentDate: String = R.string.loren_ipsum.toString(),
     currentEnrollmentExpiration: String = R.string.loren_ipsum.toString(),
     profileImage: Int = R.drawable.user,
+    navController: NavController,
     modifier: Modifier = Modifier
     ) {
     Box(
@@ -195,17 +199,4 @@ fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: I
             modifier = Modifier.size(125.dp).padding(0.dp, 0.dp, 25.dp)
         )
     }
-}
-
-@Composable
-@Preview
-fun ProfilePreview() {
-    Profile(
-        name = "Name",
-        surname = "Tengo Un Apellido Muy Largo",
-        email = "email@email.com",
-        birthdate = "20/09/2001",
-        enrollmentDate = "01/03/2023",
-        currentEnrollmentExpiration = "01/12/2024"
-    )
 }

@@ -17,11 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.gymapp.R
+import com.example.gymapp.ui.navegation.AppScreens
 import com.example.gymapp.ui.theme.GymRed
 
 @Composable
-fun Footer(modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
+fun Footer(navController: NavController, modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -33,7 +35,7 @@ fun Footer(modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
             contentDescription = R.string.calendar.toString(),
             modifier = Modifier.size(iconSize)
                 .padding(10.dp)
-                .clickable {  }
+                .clickable { navController.navigate( route = AppScreens.Activity.route) }
         )
 
         Icon(
@@ -41,7 +43,7 @@ fun Footer(modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
             contentDescription = R.string.home.toString(),
             modifier = Modifier.size(iconSize)
                 .padding(10.dp)
-                .clickable {  }
+                .clickable { navController.navigate( route = AppScreens.ProfileScreen.route)}
         )
 
         Icon(
@@ -49,13 +51,7 @@ fun Footer(modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
             contentDescription = R.string.profile.toString(),
             modifier = Modifier.size(iconSize)
                 .padding(10.dp)
-                .clickable {  }
+                .clickable { navController.navigate( route = AppScreens.ProfileScreen.route)  }
         )
     }
-}
-
-@Composable
-@Preview
-fun FooterPreview(){
-    Footer()
 }
