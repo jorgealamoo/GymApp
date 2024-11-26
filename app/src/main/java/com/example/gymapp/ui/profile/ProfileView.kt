@@ -11,8 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,27 +32,78 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.R
+import com.example.gymapp.ui.Activities.ContentActivity
+import com.example.gymapp.ui.components.DrawerContent.DrawerContent
 import com.example.gymapp.ui.components.footer.Footer
 import com.example.gymapp.ui.components.header.Header
 import com.example.gymapp.ui.components.profile_content.ProfileContent
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
 fun Profile(
-    name: String,
-    surname: String,
-    email: String,
-    birthdate: String,
-    enrollmentDate: String,
-    currentEnrollmentExpiration: String,
-    profileImage: Int = R.drawable.user
+    name: String = R.string.loren_ipsum.toString(),
+    surname: String = R.string.loren_ipsum.toString(),
+    email: String = R.string.loren_ipsum.toString(),
+    birthdate: String = R.string.loren_ipsum.toString(),
+    enrollmentDate: String = R.string.loren_ipsum.toString(),
+    currentEnrollmentExpiration: String = R.string.loren_ipsum.toString(),
+    profileImage: Int = R.drawable.user,
+){
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer(
+    drawerState = drawerState,
+    drawerContent = {
+        DrawerContent { option ->
+            println("Seleccionaste: $option")
+            scope.launch { drawerState.close() }
+        }
+    },
+    gesturesEnabled = true
+    ) {
+        Scaffold(
+            topBar = {
+                Header(
+                    title = R.string.profile,
+                    onMenuClick = { scope.launch { drawerState.open() } }
+                )
+            },
+            content = { paddingValues ->
+                ContentProfile(
+                    name = name,
+                    surname = surname,
+                    email = email,
+                    birthdate = birthdate,
+                    enrollmentDate = enrollmentDate,
+                    currentEnrollmentExpiration = currentEnrollmentExpiration,
+                    profileImage = R.drawable.user,
+                    modifier = Modifier.padding(paddingValues))
+            },
+            bottomBar = {
+                Footer()
+            }
+        )
+    }
+}
+@Composable
+fun ContentProfile(
+    name: String = R.string.loren_ipsum.toString(),
+    surname: String = R.string.loren_ipsum.toString(),
+    email: String = R.string.loren_ipsum.toString(),
+    birthdate: String = R.string.loren_ipsum.toString(),
+    enrollmentDate: String = R.string.loren_ipsum.toString(),
+    currentEnrollmentExpiration: String = R.string.loren_ipsum.toString(),
+    profileImage: Int = R.drawable.user,
+    modifier: Modifier = Modifier
     ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(White)
     ) {
@@ -64,7 +120,6 @@ fun Profile(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Header(title = R.string.profile)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -93,10 +148,6 @@ fun Profile(
                 fontSize = 22.sp,
                 textDecoration = TextDecoration.Underline
             )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Footer()
         }
     }
 }
