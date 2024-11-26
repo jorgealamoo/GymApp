@@ -40,5 +40,6 @@
     <string name="logOut">LogOut</string>
     <string name="leg_press">Leg Press</string>
     <string name="day">DAY</string>
+    <string name="exercises">Exercises</string>
 
 </resources>
