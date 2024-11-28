@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.Activities.ContentActivity
+import com.example.gymapp.ui.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.profile.ContentProfile
 import com.example.gymapp.ui.profile.Profile
 
@@ -18,6 +19,9 @@ fun AppNavegation(){
         }
         composable(route = AppScreens.ProfileScreen.route) {
             Profile(navController = navController)
+        }
+        composable(route = AppScreens.ExerciseRoutine.route) {
+            ExerciseRoutineView(navController = navController)
         }
     }
 }

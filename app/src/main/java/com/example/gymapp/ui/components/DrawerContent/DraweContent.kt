@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -35,12 +36,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.ui.theme.GymRed
 
 @Composable
 fun DrawerContent(
-    onOptionSelected: (String) -> Unit
+    navController: NavController
 ) {
        Column(
         modifier = Modifier.fillMaxHeight()
@@ -48,9 +50,9 @@ fun DrawerContent(
             .background(Color.White)
             .padding(top = 70.dp)
     ) {
-        dataLink()
-        dataLink()
-        dataLink()
+           dataLink()
+           dataLink()
+           dataLink()
         Spacer(modifier = Modifier.weight(1f))
         Row (
             modifier = Modifier
@@ -96,12 +98,10 @@ fun DrawerContent(
 }
 
 @Composable
-fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum ){
+fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum){
     Row (
         modifier = modifier
-            .clickable(onClick = {})
             .fillMaxWidth()
-            .padding( bottom = 30.dp)
             .drawBehind{
                 drawLine(
                     color = Color.Black,
@@ -114,20 +114,31 @@ fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Ad
         verticalAlignment = Alignment.CenterVertically,
 
     ){
-        Icon(
-            imageVector = icon,
-            contentDescription = R.string.loren_ipsum.toString(),
-            modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
-        )
-        Text(
-            text = stringResource(id = textId),
-            modifier = Modifier.padding(start = 15.dp, bottom = 10.dp),
-            fontSize = 20.sp,
-        )
+        TextButton(
+            onClick = {"TODO"},
+            modifier = Modifier.fillMaxWidth()
+                .height(70.dp),
+            contentPadding = PaddingValues()
+        ){
+            Icon(
+                imageVector = icon,
+                contentDescription = R.string.loren_ipsum.toString(),
+                modifier = Modifier.padding(start = 10.dp, end = 40.dp)
+            )
+            Text(
+                text = stringResource(id = textId),
+                modifier = Modifier
+                    .padding(end = 60.dp),
+                fontSize = 20.sp,
+            )
+        }
     }
 }
+
+/*
 @Preview
 @Composable
 fun preView(){
-    DrawerContent( ){ }
+    DrawerContent( )
 }
+ */

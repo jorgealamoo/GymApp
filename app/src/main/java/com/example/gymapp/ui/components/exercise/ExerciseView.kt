@@ -25,12 +25,13 @@ fun Exercise(
     exerciseName: String,
     repetitions: Int = 0,
     weight: Int = 0,
-    viewModel: ExerciseViewModel = viewModel()
+    viewModel: ExerciseViewModel = viewModel(),
+    modifier: Modifier = Modifier
 ) {
     val exercise = viewModel.getExerciseByName(exerciseName)
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .size(320.dp, 90.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

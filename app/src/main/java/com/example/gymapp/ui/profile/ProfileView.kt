@@ -62,10 +62,7 @@ fun Profile(
     ModalNavigationDrawer(
     drawerState = drawerState,
     drawerContent = {
-        DrawerContent { option ->
-            println("Seleccionaste: $option")
-            scope.launch { drawerState.close() }
-        }
+        DrawerContent(navController = navController)
     },
     gesturesEnabled = true
     ) {
