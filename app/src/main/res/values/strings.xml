@@ -43,5 +43,6 @@
     <string name="exercises">Exercises</string>
     <string name="complete">Complete</string>
     <string name="return_button">Return button</string>
+    <string name="routine_table">Routine Table</string>
 
 </resources>

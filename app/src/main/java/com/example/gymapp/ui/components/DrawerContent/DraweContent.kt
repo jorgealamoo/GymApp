@@ -50,7 +50,7 @@ fun DrawerContent(
             .background(Color.White)
             .padding(top = 70.dp)
     ) {
-           dataLink()
+           dataLink(textId = R.string.routine_table)
            dataLink()
            dataLink()
         Spacer(modifier = Modifier.weight(1f))
@@ -123,7 +123,7 @@ fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Ad
             Icon(
                 imageVector = icon,
                 contentDescription = R.string.loren_ipsum.toString(),
-                modifier = Modifier.padding(start = 10.dp, end = 40.dp)
+                modifier = Modifier.padding(start = 10.dp, end = 20.dp)
             )
             Text(
                 text = stringResource(id = textId),
