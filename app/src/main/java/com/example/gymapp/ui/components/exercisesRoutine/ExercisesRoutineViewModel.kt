@@ -8,6 +8,6 @@ class ExercisesRoutineViewModel : ViewModel() {
 
     fun getRoutinesByName(name: String) : ExercisesRoutine {
         return routines.find { it.routineName == name }
-            ?: ExercisesRoutine("lorem_ipsum", R.drawable.ic_launcher_foreground, R.string.loren_ipsum)
+            ?: ExercisesRoutine("lorem_ipsum", R.drawable.ic_launcher_foreground, R.string.loren_ipsum, R.drawable.ic_launcher_foreground)
     }
 }

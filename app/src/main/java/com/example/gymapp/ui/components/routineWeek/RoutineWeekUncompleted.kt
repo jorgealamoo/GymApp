@@ -19,9 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gymapp.R
-import com.example.gymapp.ui.components.routineDay.RoutineDayCompleted
-import com.example.gymapp.ui.components.routineDay.RoutineDayCompletedWeek
+import com.example.gymapp.ui.components.exercisesRoutine.ExercisesRoutineViewModel
+import com.example.gymapp.ui.components.routineDay.RoutineDay
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
@@ -29,12 +30,9 @@ import com.example.gymapp.ui.theme.White
 @Composable
 fun RoutineWeekUncompleted(
     weekDay: Int = 0,
-    day1Exercise: Int,
-    day2Exercise: Int,
-    day3Exercise: Int,
-    day4Exercise: Int,
-    day5Exercise: Int,
-    onProgression: Boolean = false
+    exercises: List<Pair<String, Boolean>> = emptyList(),
+    onProgression: Boolean = false,
+    viewModel: ExercisesRoutineViewModel = viewModel()
 ){
     val weekColor = if (onProgression) GymRed else Black
 
@@ -71,23 +69,22 @@ fun RoutineWeekUncompleted(
 
         Spacer(modifier = Modifier.width(15.dp))
 
-        RoutineDayCompleted(dayOfWeek = 1, exercise = day1Exercise)
+        exercises.forEachIndexed { index, exercisePair ->
+            if (index < 5) {
+                val (exerciseName, isCompleted) = exercisePair
 
-        Spacer(modifier = Modifier.width(10.dp))
+                RoutineDay(
+                    dayOfWeek = index + 1,
+                    exerciseImage = viewModel.getRoutinesByName(exerciseName).routineIcon,
+                    exercise = viewModel.getRoutinesByName(exerciseName).routineString,
+                    completed = isCompleted
+                )
+            }
 
-        RoutineDayCompleted(dayOfWeek = 2, exercise = day2Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompleted(dayOfWeek = 3, exercise = day3Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompleted(dayOfWeek = 4, exercise = day4Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompleted(dayOfWeek = 5, exercise = day5Exercise)
+            if (index != exercises.lastIndex && index < 4) {
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+        }
     }
 }
 
@@ -96,11 +93,13 @@ fun RoutineWeekUncompleted(
 fun RoutineWeekUncompletedPreview(){
     RoutineWeekUncompleted(
         weekDay = 1,
-        day1Exercise = R.string.abs,
-        day2Exercise = R.string.legs,
-        day3Exercise = R.string.chest,
-        day4Exercise = R.string.arms,
-        day5Exercise = R.string.back,
+        exercises = listOf(
+            "legs" to false,
+            "legs" to true,
+            "legs" to false,
+            "legs" to true,
+            "legs" to false
+        ),
         onProgression = true
     )
 }

@@ -22,20 +22,24 @@ import androidx.compose.ui.unit.sp
 import com.example.gymapp.R
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.GymYellow
+import com.example.gymapp.ui.theme.White
 
 @Composable
-fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int){
+fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boolean = false){
+    val backgroundColor = if (completed) GymRed else GymYellow.copy(0.6f)
+    val displayImage = if (completed) R.drawable.white_tick else exerciseImage
+
     Column(
         modifier = Modifier
             .size(40.dp, 105.dp)
             .clip(RoundedCornerShape(5.dp))
-            .background(GymYellow.copy(0.6f)),
+            .background(backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = dayOfWeek.toString(),
-            color = GymRed,
+            color = if (completed) White else GymRed,
             fontSize = 24.sp,
             fontWeight = FontWeight.ExtraBold
         )
@@ -43,8 +47,8 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int){
         Spacer(modifier = Modifier.height(5.dp))
 
         Image(
-            painter = painterResource(exerciseImage),
-            contentDescription = stringResource(R.string.completed),
+            painter = painterResource(displayImage),
+            contentDescription = if (completed) stringResource(R.string.completed) else stringResource(exercise),
             modifier = Modifier.size(26.dp)
         )
 
@@ -61,5 +65,5 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int){
 @Composable
 @Preview
 fun RoutineDay(){
-    RoutineDay(dayOfWeek = 1, exerciseImage = R.drawable.piernas, exercise = R.string.legs)
+    RoutineDay(dayOfWeek = 1, exerciseImage = R.drawable.piernas, exercise = R.string.legs, true)
 }
