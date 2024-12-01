@@ -44,5 +44,6 @@
     <string name="complete">Complete</string>
     <string name="return_button">Return button</string>
     <string name="routine_table">Routine Table</string>
+    <string name="your_points">Your Points:</string>
 
 </resources>
