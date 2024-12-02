@@ -15,16 +15,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -33,18 +43,57 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.gymapp.R
+import com.example.gymapp.ui.Activities.ContentActivity
+import com.example.gymapp.ui.components.DrawerContent.DrawerContent
 import com.example.gymapp.ui.components.card.Card
+import com.example.gymapp.ui.components.footer.Footer
+import com.example.gymapp.ui.components.header.Header
 import com.example.gymapp.ui.theme.White
+import kotlinx.coroutines.launch
 
 @Composable
-fun Home(modifier: Modifier = Modifier,
+
+fun Home(navController: NavController, modifier: Modifier = Modifier){
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    ModalNavigationDrawer (
+        drawerState = drawerState,
+        drawerContent = {
+            DrawerContent(navController = navController)
+        },
+        gesturesEnabled = true
+    ) {
+        Scaffold(
+            topBar = {
+                Header(
+                    title = R.string.home,
+                    onMenuClick = { scope.launch { drawerState.open() } }
+                )
+            },
+            content = { paddingValues ->
+                ContentHome(modifier = Modifier.padding(paddingValues))
+            },
+            bottomBar = {
+                Footer(navController = navController)
+            }
+        )
+    }
+}
+
+
+@Composable
+fun ContentHome(modifier: Modifier = Modifier,
          profileImage: Int = R.drawable.user,
          name: String = "Name",
-         surname: String = "Surname"){
-
+         surname: String = "Surname")
+{
     var expanded = remember { mutableStateOf(false) }
-    var selectedOption = remember { mutableStateOf("Seleccionar opción") }
+    val options = listOf("Las Palmas de Gran Canaria", "Santa Cruz de Tenerife", "Puerto del Rosario")
+    var selectedOption = remember { mutableStateOf(options[0]) }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -104,36 +153,51 @@ fun Home(modifier: Modifier = Modifier,
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Button(
-                    onClick = { expanded.value = true },
-                    modifier = Modifier.fillMaxWidth()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                 ) {
-                    Text(text = selectedOption.value)
-                }
-                DropdownMenu(
-                    expanded = expanded.value,
-                    onDismissRequest = { expanded.value = false } // Cerrar el menú al hacer clic fuera
-                ) {
-                    val options = listOf("Opción 1", "Opción 2", "Opción 3")
-                    options.forEach { option ->
-                        DropdownMenuItem(
-                            text = { Text(option) },
-                            onClick = {
-                                selectedOption.value = option.toString() // Actualiza la opción seleccionada
-                                expanded.value = false // Cierra el menú
-                            }
-                        )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color.Transparent)
+                    ) {
+                        TextButton(
+                            onClick = { expanded.value = true },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = selectedOption.value,
+                            )
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDown,
+                                contentDescription = "Abrir menú"
+                            )
+                        }
+
+                    }
+                    DropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = { expanded.value = false },
+                        modifier = Modifier
+                            .width(312.dp)
+                            .align(Alignment.TopStart)
+
+                    ) {
+                        options.filter { it != selectedOption.value }.forEach { option ->
+                            DropdownMenuItem(
+                                text = { Text(option) },
+                                onClick = {
+                                    selectedOption.value = option // Actualiza la opción seleccionada
+                                    expanded.value = false // Cierra el menú
+                                }
+                            )
+                        }
                     }
                 }
             }
         }
-
     }
-
-}
-
-@Composable
-@Preview
-fun LoginPreview(){
-    Home();
 }
