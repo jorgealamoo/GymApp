@@ -21,10 +21,10 @@ fun AppNavegation(){
         composable(route = AppScreens.ProfileScreen.route) {
             Profile(navController = navController)
         }
-        /*composable(route = AppScreens.ExerciseRoutine.route) {
-            ExerciseRoutineView(navController = navController)
-        }*/
         composable(route = AppScreens.ExerciseRoutine.route) {
+            ExerciseRoutineView(navController = navController)
+        }
+        composable(route = AppScreens.HomeScreen.route) {
             Home(navController = navController)
         }
     }

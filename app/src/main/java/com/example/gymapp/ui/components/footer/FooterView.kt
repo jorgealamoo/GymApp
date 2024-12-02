@@ -43,7 +43,7 @@ fun Footer(navController: NavController, modifier: Modifier = Modifier, iconSize
             contentDescription = R.string.home.toString(),
             modifier = Modifier.size(iconSize)
                 .padding(10.dp)
-                .clickable { navController.navigate( route = AppScreens.ProfileScreen.route)}
+                .clickable { navController.navigate( route = AppScreens.HomeScreen.route)}
         )
 
         Icon(
