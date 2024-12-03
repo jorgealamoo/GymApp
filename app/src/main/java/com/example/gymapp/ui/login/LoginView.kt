@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -29,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -42,17 +42,19 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.ui.theme.Black
-import com.example.gymapp.ui.theme.GymOrange
 import com.example.gymapp.ui.theme.GymRed
-import com.example.gymapp.ui.theme.GymYellow
 import com.example.gymapp.ui.theme.White
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun Login(){
-    var username by remember { mutableStateOf("") }
+fun Login(navController: NavController){
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var loginResult by remember { mutableStateOf<String?>(null) }
+    var showModal by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -70,7 +72,7 @@ fun Login(){
 
         Column(
             modifier = Modifier
-                .size(350.dp, 500.dp)
+                .size(350.dp, 550.dp)
                 .padding(16.dp)
                 .clip(RoundedCornerShape(25.dp))
                 .background(GymRed.copy(alpha = 0.6f))
@@ -87,8 +89,8 @@ fun Login(){
             Spacer(modifier = Modifier.height(40.dp))
 
             OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
+                value = email,
+                onValueChange = { email = it },
                 placeholder = { Text(stringResource(id = R.string.username), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
                 textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
                 modifier = Modifier.width(265.dp),
@@ -124,7 +126,17 @@ fun Login(){
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
-                onClick = { println("Login done") },
+                onClick = {
+                    if (email.isBlank() || password.isBlank()) {
+                        loginResult = "Please fill in all fields."
+                        showModal = true
+                    } else {
+                        Login(email, password, { result ->
+                            loginResult = result
+                            showModal = true
+                        })
+                    }
+                },
                 modifier = Modifier
                     .width(170.dp)
                     .height(50.dp),
@@ -146,13 +158,38 @@ fun Login(){
                 fontSize = 16.sp,
                 textDecoration = TextDecoration.Underline
             )
+
+            if (showModal) {
+                AlertDialog(
+                    onDismissRequest = { showModal = false },
+                    title = {
+                        Text(text = "Login Result", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    },
+                    text = {
+                        Text(loginResult ?: "")
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = { showModal = false },
+                            colors = ButtonDefaults.buttonColors(GymRed),
+                            modifier = Modifier.size(80.dp, 50.dp)
+                        ) {
+                            Text("OK", fontWeight = FontWeight.ExtraBold)
+                        }
+                    }
+                )
+            }
         }
     }
-
 }
 
-@Composable
-@Preview
-fun LoginPreview(){
-    Login()
+fun Login(email: String,password: String, onResult: (String) -> Unit, auth: FirebaseAuth = FirebaseAuth.getInstance()){
+    auth.signInWithEmailAndPassword(email, password)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                onResult("Login successful: ${auth.currentUser?.email}")
+            } else {
+                onResult("Error: ${task.exception?.message}")
+            }
+        }
 }
