@@ -72,7 +72,7 @@ fun Login(navController: NavController){
 
         Column(
             modifier = Modifier
-                .size(350.dp, 550.dp)
+                .size(350.dp, 500.dp)
                 .padding(16.dp)
                 .clip(RoundedCornerShape(25.dp))
                 .background(GymRed.copy(alpha = 0.6f))
