@@ -131,7 +131,7 @@ fun Login(navController: NavController){
                         loginResult = "Please fill in all fields."
                         showModal = true
                     } else {
-                        Login(email, password, { result ->
+                        Login(email, password, navController, { result ->
                             loginResult = result
                             showModal = true
                         })
@@ -183,11 +183,17 @@ fun Login(navController: NavController){
     }
 }
 
-fun Login(email: String,password: String, onResult: (String) -> Unit, auth: FirebaseAuth = FirebaseAuth.getInstance()){
+fun Login(
+    email: String,
+    password: String,
+    navController: NavController,
+    onResult: (String) -> Unit,
+    auth: FirebaseAuth = FirebaseAuth.getInstance()
+){
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                onResult("Login successful: ${auth.currentUser?.email}")
+                navController.navigate("home_screen")
             } else {
                 onResult("Error: ${task.exception?.message}")
             }
