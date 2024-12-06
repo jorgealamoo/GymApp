@@ -46,5 +46,8 @@
     <string name="routine_table">Routine Table</string>
     <string name="your_points">Your Points:</string>
     <string name="points_store">Points Store</string>
+    <string name="login_error">There were problems to logging in. Please try again.</string>
+    <string name="login_result">Login Result</string>
+
 
 </resources>

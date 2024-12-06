@@ -1,10 +1,9 @@
 package com.example.gymapp.ui.login
 
-import android.content.Context
-import android.nfc.Tag
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,47 +28,49 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.models.User
+import com.example.gymapp.ui.components.InformationDialog
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
-import com.example.gymapp.utils.PreferencesManager
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
+import com.example.gymapp.utils.FirebaseUtils
 
 @Composable
 fun Login(navController: NavController){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var loginResult by remember { mutableStateOf<String?>(null) }
     var showModal by remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Box(
+
         modifier = Modifier
             .fillMaxSize()
             .background(White)
+            .clickable { keyboardController?.hide()}
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
@@ -95,57 +96,24 @@ fun Login(navController: NavController){
                 modifier = Modifier.size(140.dp)
             )
 
+            if(FirebaseUtils.isUserLoggedIn()) navController.navigate("home_screen")
+
             Spacer(modifier = Modifier.height(40.dp))
 
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = { Text(stringResource(id = R.string.username), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
-                textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.width(265.dp),
-                shape = RoundedCornerShape(25.dp),
-                leadingIcon = {
-                    Icon(Icons.Filled.Person, contentDescription = null, tint = Color.Black)
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = White,
-                    focusedPlaceholderColor = White
-                )
-            )
-
+            RoundTextField(R.string.username,email,{ email = it },Icons.Filled.Person)
             Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                placeholder = { Text(stringResource(id = R.string.password), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
-                textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier.width(265.dp),
-                shape = RoundedCornerShape(25.dp),
-                leadingIcon = {
-                    Icon(Icons.Filled.Lock, contentDescription = null, tint = Color.Black)
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = White,
-                    focusedPlaceholderColor = White
-                ),
-                visualTransformation = PasswordVisualTransformation()
-            )
-
+            RoundTextField(R.string.password,password,{ password = it },Icons.Filled.Lock,PasswordVisualTransformation())
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(
                 onClick = {
-                    if (email.isBlank() || password.isBlank()) {
-                        loginResult = "Please fill in all fields."
-                        showModal = true
+                    login(email, password, navController) { isSuccess ->
+                    if (isSuccess) {
+                        navController.navigate("home_screen")
                     } else {
-                        Login(email, password, navController, { result ->
-                            loginResult = result
-                            showModal = true
-                        })
+                        showModal = true
                     }
-                },
+                }},
                 modifier = Modifier
                     .width(170.dp)
                     .height(50.dp),
@@ -169,72 +137,43 @@ fun Login(navController: NavController){
             )
 
             if (showModal) {
-                AlertDialog(
-                    onDismissRequest = { showModal = false },
-                    title = {
-                        Text(text = "Login Result", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                    },
-                    text = {
-                        Text(loginResult ?: "")
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = { showModal = false },
-                            colors = ButtonDefaults.buttonColors(GymRed),
-                            modifier = Modifier.size(80.dp, 50.dp)
-                        ) {
-                            Text("OK", fontWeight = FontWeight.ExtraBold)
-                        }
-                    }
-                )
+                InformationDialog(R.string.login_result, R.string.login_error )
             }
         }
     }
 }
 
-fun Login(
+@Composable
+fun RoundTextField(
+    placeholder: Int,
+    value: String,
+    onValueChange: (String) -> Unit,
+    leadingIcon: ImageVector,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+
+    ){
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = { Text(stringResource(id = placeholder), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
+        textStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold),
+        modifier = Modifier.width(265.dp),
+        shape = RoundedCornerShape(25.dp),
+        leadingIcon = {
+            Icon(leadingIcon, contentDescription = null, tint = Color.Black)
+        },
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = White,
+            focusedPlaceholderColor = White
+        ),
+        visualTransformation = visualTransformation
+    )
+}
+fun login(
     email: String,
     password: String,
     navController: NavController,
-    onResult: (String) -> Unit,
-    auth: FirebaseAuth = FirebaseAuth.getInstance()
-){
-    auth.signInWithEmailAndPassword(email, password)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val user = FirebaseAuth.getInstance().currentUser
-                if (user != null) {
-                    val db = FirebaseFirestore.getInstance()
-                    val userRef = db.collection("Users").document(user.uid)
-
-                    userRef.get().addOnSuccessListener{ document ->
-                        if (document.exists()) {
-
-                            val name = document.getString("name")
-                            val surname = document.getString("surname")
-                            val email = document.getString("email")
-                            val enrollment = document.getString("enrollment")
-                            val expirationEnrollment = document.getString("expirationEnrollment")
-
-                            val userModel = User(
-                                uid = user.uid,
-                                name = name.toString(),
-                                surname = surname.toString(),
-                                email = user.email.toString() ?: email.toString(),
-                                image = user.photoUrl?.toString() ?: "URL no disponible",
-                                enrollment = enrollment.toString(),
-                                expirationEnrollment = expirationEnrollment.toString()
-                            )
-
-                            PreferencesManager.saveUser(navController.context, userModel)
-
-                            navController.navigate("home_screen")
-                        }
-                    }
-
-                }
-            } else {
-                onResult("Error: ${task.exception?.message}")
-            }
-        }
+    onResult: (Boolean) -> Unit
+) {
+        onResult(FirebaseUtils.login(email, password, navController))
 }

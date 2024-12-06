@@ -39,13 +39,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.ui.theme.GymRed
+import com.example.gymapp.utils.FirebaseUtils
 
 @Composable
 fun DrawerContent(
     navController: NavController
 ) {
        Column(
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
             .width(250.dp)
             .background(Color.White)
             .padding(top = 70.dp)
@@ -60,37 +62,15 @@ fun DrawerContent(
            )
            dataLink()
         Spacer(modifier = Modifier.weight(1f))
-        Row (
-            modifier = Modifier
-                .clickable(onClick = {})
-                .fillMaxWidth()
-                .drawBehind{
-                    drawLine(
-                        color = Color.Black,
-                        start = Offset(0f, size.height),
-                        end = Offset(size.width, size.height),
-                        strokeWidth = 3.dp.toPx()
-                    )
-                },
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-
-            ){
-            Icon(
-                imageVector = Icons.Default.ExitToApp,
-                contentDescription = R.string.loren_ipsum.toString(),
-                modifier = Modifier.padding(start = 10.dp, bottom = 10.dp)
-                    .size(30.dp),
-                tint = GymRed
-            )
-            Text(
-                text = stringResource(id = R.string.logOut),
-                modifier = Modifier.padding(start = 15.dp, bottom = 10.dp),
-                fontSize = 20.sp,
-                color = GymRed,
-                fontWeight = FontWeight.Bold
-            )
-        }
+           dataLink(
+               textId = R.string.logOut,
+               icon = Icons.Default.ExitToApp,
+               onClick = {
+                   FirebaseUtils.logout()
+                   navController.navigate("login_screen")
+               },
+                color = GymRed
+           )
         TextButton(
             onClick = {"TODO"},
             modifier = Modifier.fillMaxWidth(),
@@ -104,11 +84,11 @@ fun DrawerContent(
 }
 
 @Composable
-fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum, onClick: () -> Unit = {}){
+fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum, onClick: () -> Unit = {}, color: Color = Color.Unspecified){
     Row (
         modifier = modifier
             .fillMaxWidth()
-            .drawBehind{
+            .drawBehind {
                 drawLine(
                     color = Color.Black,
                     start = Offset(0f, size.height),
@@ -122,20 +102,23 @@ fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Ad
     ){
         TextButton(
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(70.dp),
             contentPadding = PaddingValues()
         ){
             Icon(
                 imageVector = icon,
                 contentDescription = R.string.loren_ipsum.toString(),
-                modifier = Modifier.padding(start = 10.dp, end = 20.dp)
+                modifier = Modifier.padding(start = 10.dp, end = 20.dp),
+                tint = color
             )
             Text(
                 text = stringResource(id = textId),
                 modifier = Modifier
                     .padding(end = 60.dp),
                 fontSize = 20.sp,
+                color = color
             )
         }
     }
