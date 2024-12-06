@@ -1,5 +1,8 @@
 package com.example.gymapp.ui.login
 
+import android.content.Context
+import android.nfc.Tag
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -44,10 +48,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
+import com.example.gymapp.models.User
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.PreferencesManager
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 
 @Composable
 fun Login(navController: NavController){
@@ -193,7 +202,37 @@ fun Login(
     auth.signInWithEmailAndPassword(email, password)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                navController.navigate("home_screen")
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null) {
+                    val db = FirebaseFirestore.getInstance()
+                    val userRef = db.collection("Users").document(user.uid)
+
+                    userRef.get().addOnSuccessListener{ document ->
+                        if (document.exists()) {
+
+                            val name = document.getString("name")
+                            val surname = document.getString("surname")
+                            val email = document.getString("email")
+                            val enrollment = document.getString("enrollment")
+                            val expirationEnrollment = document.getString("expirationEnrollment")
+
+                            val userModel = User(
+                                uid = user.uid,
+                                name = name.toString(),
+                                surname = surname.toString(),
+                                email = user.email.toString() ?: email.toString(),
+                                image = user.photoUrl?.toString() ?: "URL no disponible",
+                                enrollment = enrollment.toString(),
+                                expirationEnrollment = expirationEnrollment.toString()
+                            )
+
+                            PreferencesManager.saveUser(navController.context, userModel)
+
+                            navController.navigate("home_screen")
+                        }
+                    }
+
+                }
             } else {
                 onResult("Error: ${task.exception?.message}")
             }

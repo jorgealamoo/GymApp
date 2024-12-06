@@ -1,4 +1,4 @@
-package com.example.gymapp.ui.navegation
+package com.example.gymapp.navegation
 
 
 /*

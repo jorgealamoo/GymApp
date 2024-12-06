@@ -1,4 +1,4 @@
-package com.example.gymapp.ui.navegation
+package com.example.gymapp.navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

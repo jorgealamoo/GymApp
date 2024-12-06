@@ -1,5 +1,6 @@
 package com.example.gymapp.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +52,7 @@ import com.example.gymapp.ui.components.card.Card
 import com.example.gymapp.ui.components.footer.Footer
 import com.example.gymapp.ui.components.header.Header
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable

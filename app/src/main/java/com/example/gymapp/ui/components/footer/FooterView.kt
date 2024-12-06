@@ -14,12 +14,11 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.ui.navegation.AppScreens
+import com.example.gymapp.navegation.AppScreens
 import com.example.gymapp.ui.theme.GymRed
 
 @Composable
