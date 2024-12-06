@@ -5,8 +5,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.gymapp.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.Activities.Activity
-import com.example.gymapp.ui.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.home.Home
 import com.example.gymapp.ui.login.Login
 import com.example.gymapp.ui.pointsStore.PointsStore

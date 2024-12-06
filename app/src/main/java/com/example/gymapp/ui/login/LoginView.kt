@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.ui.components.InformationDialog
+import com.example.gymapp.components.InformationDialog
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
@@ -137,7 +137,10 @@ fun Login(navController: NavController){
             )
 
             if (showModal) {
-                InformationDialog(R.string.login_result, R.string.login_error )
+                InformationDialog(
+                    R.string.login_result,
+                    R.string.login_error,
+                    onDismiss = { showModal = false })
             }
         }
     }

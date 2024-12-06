@@ -42,21 +42,21 @@ object FirebaseUtils{
         val user = auth.currentUser
         if(user != null) {
             firestore.collection("Users").document(user.uid)
-                .get().addOnSuccessListener{ document ->
-                    if(document.exists()){
-                        val userModel = User(
-                            uid = user.uid,
-                            name = document.getString("name").toString(),
-                            surname = document.getString("surname").toString(),
-                            email = user.email.toString(),
-                            image = user.photoUrl?.toString() ?: "URL no disponible",
-                            enrollment = document.getString("enrollment").toString(),
-                            expirationEnrollment = document.getString("expirationEnrollment").toString()
-                        )
-
-                        PreferencesManager.saveUser(navController.context, userModel)
-                    }
+                .get().addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val userModel = User(
+                        uid = user.uid,
+                        name = document.getString("name").toString(),
+                        surname = document.getString("surname").toString(),
+                        email = user.email.toString(),
+                        image = user.photoUrl?.toString() ?: "URL no disponible",
+                        enrollment = document.getString("enrollment").toString(),
+                        expirationEnrollment = document.getString("expirationEnrollment")
+                            .toString()
+                    )
+                    PreferencesManager.saveUser(navController.context, userModel)
                 }
+            }
         }
     }
 

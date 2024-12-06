@@ -1,6 +1,5 @@
 package com.example.gymapp.ui.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -41,18 +39,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.ui.Activities.ContentActivity
-import com.example.gymapp.ui.components.DrawerContent.DrawerContent
-import com.example.gymapp.ui.components.card.Card
-import com.example.gymapp.ui.components.footer.Footer
-import com.example.gymapp.ui.components.header.Header
+import com.example.gymapp.components.DrawerContent.DrawerContent
+import com.example.gymapp.components.card.Card
+import com.example.gymapp.components.footer.Footer
+import com.example.gymapp.components.header.Header
 import com.example.gymapp.ui.theme.White
-import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable

@@ -29,10 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.ui.components.DrawerContent.DrawerContent
-import com.example.gymapp.ui.components.footer.Footer
-import com.example.gymapp.ui.components.header.Header
-import com.example.gymapp.ui.components.pointsProductCard.PointsProductCard
+import com.example.gymapp.components.DrawerContent.DrawerContent
+import com.example.gymapp.components.footer.Footer
+import com.example.gymapp.components.header.Header
+import com.example.gymapp.components.pointsProductCard.PointsProductCard
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import kotlinx.coroutines.launch

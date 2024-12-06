@@ -24,11 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.ui.components.DrawerContent.DrawerContent
-import com.example.gymapp.ui.components.footer.Footer
-import com.example.gymapp.ui.components.header.Header
-import com.example.gymapp.ui.components.routineWeek.RoutineWeekUncompleted
-import com.example.gymapp.ui.pointsStore.ContentPointsStore
+import com.example.gymapp.components.DrawerContent.DrawerContent
+import com.example.gymapp.components.footer.Footer
+import com.example.gymapp.components.header.Header
+import com.example.gymapp.components.routineWeek.RoutineWeekUncompleted
 import com.example.gymapp.ui.theme.White
 import kotlinx.coroutines.launch
 
