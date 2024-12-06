@@ -49,10 +49,10 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boo
         Image(
             painter = painterResource(displayImage),
             contentDescription = if (completed) stringResource(R.string.completed) else stringResource(exercise),
-            modifier = Modifier.size(26.dp)
+            modifier = Modifier.size(35.dp)
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Text(
             text = stringResource(exercise),
@@ -65,5 +65,5 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boo
 @Composable
 @Preview
 fun RoutineDay(){
-    RoutineDay(dayOfWeek = 1, exerciseImage = R.drawable.piernas, exercise = R.string.legs, true)
+    RoutineDay(dayOfWeek = 1, exerciseImage = R.drawable.piernas, exercise = R.string.legs, false)
 }

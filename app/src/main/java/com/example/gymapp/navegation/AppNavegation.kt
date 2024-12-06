@@ -9,6 +9,7 @@ import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.home.Home
 import com.example.gymapp.ui.login.Login
+import com.example.gymapp.ui.pointsStore.PointsStore
 import com.example.gymapp.ui.profile.Profile
 import com.example.gymapp.ui.theme.GymAppTheme
 
@@ -30,6 +31,9 @@ fun AppNavegation(){
         }
         composable(route = AppScreens.LoginScreen.route) {
             Login(navController = navController)
+        }
+        composable(route = AppScreens.PointsStoreScreen.route) {
+            PointsStore(navController = navController)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.gymapp.ui.components.pointsProductCard
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,12 +28,13 @@ import com.example.gymapp.ui.theme.GymOrange
 import com.example.gymapp.ui.theme.White
 
 @Composable
-fun PointsProductCard(name: Int = R.string.loren_ipsum, pointsCost: Int = 0) {
+fun PointsProductCard(name: Int = R.string.loren_ipsum, pointsCost: Int = 0, onClick: () -> Unit = {}) {
     Row(
         modifier = Modifier
             .size(315.dp, 125.dp)
             .clip(RoundedCornerShape(25.dp))
-            .background(White.copy(0.6f)),
+            .background(White.copy(0.6f))
+            .clickable { onClick },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

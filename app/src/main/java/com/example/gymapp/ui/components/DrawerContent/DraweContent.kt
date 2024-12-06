@@ -50,8 +50,14 @@ fun DrawerContent(
             .background(Color.White)
             .padding(top = 70.dp)
     ) {
-           dataLink(textId = R.string.routine_table)
-           dataLink()
+           dataLink(
+               textId = R.string.routine_table,
+               // onClick = { navController.navigate("points_store_screen") }
+           )
+           dataLink(
+               textId = R.string.points_store,
+               onClick = { navController.navigate("points_store_screen") }
+           )
            dataLink()
         Spacer(modifier = Modifier.weight(1f))
         Row (
@@ -98,7 +104,7 @@ fun DrawerContent(
 }
 
 @Composable
-fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum){
+fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Add, textId: Int = R.string.loren_ipsum, onClick: () -> Unit = {}){
     Row (
         modifier = modifier
             .fillMaxWidth()
@@ -115,7 +121,7 @@ fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Ad
 
     ){
         TextButton(
-            onClick = {"TODO"},
+            onClick = onClick,
             modifier = Modifier.fillMaxWidth()
                 .height(70.dp),
             contentPadding = PaddingValues()
@@ -134,11 +140,3 @@ fun dataLink(modifier: Modifier = Modifier, icon: ImageVector = Icons.Default.Ad
         }
     }
 }
-
-/*
-@Preview
-@Composable
-fun preView(){
-    DrawerContent( )
-}
- */
