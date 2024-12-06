@@ -11,6 +11,7 @@ import com.example.gymapp.ui.home.Home
 import com.example.gymapp.ui.login.Login
 import com.example.gymapp.ui.pointsStore.PointsStore
 import com.example.gymapp.ui.profile.Profile
+import com.example.gymapp.ui.routineTable.RoutineTable
 import com.example.gymapp.ui.theme.GymAppTheme
 
 @Composable
@@ -34,6 +35,9 @@ fun AppNavegation(){
         }
         composable(route = AppScreens.PointsStoreScreen.route) {
             PointsStore(navController = navController)
+        }
+        composable(route = AppScreens.RoutineTableScreen.route) {
+            RoutineTable(navController = navController)
         }
     }
 }

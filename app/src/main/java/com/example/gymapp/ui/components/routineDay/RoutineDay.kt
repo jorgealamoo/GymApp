@@ -2,6 +2,7 @@ package com.example.gymapp.ui.components.routineDay
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +34,8 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boo
         modifier = Modifier
             .size(40.dp, 105.dp)
             .clip(RoundedCornerShape(5.dp))
-            .background(backgroundColor),
+            .background(backgroundColor)
+            .clickable {  },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

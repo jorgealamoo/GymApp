@@ -52,7 +52,7 @@ fun DrawerContent(
     ) {
            dataLink(
                textId = R.string.routine_table,
-               // onClick = { navController.navigate("points_store_screen") }
+               onClick = { navController.navigate("routine_table_screen") }
            )
            dataLink(
                textId = R.string.points_store,
