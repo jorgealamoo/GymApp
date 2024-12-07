@@ -71,7 +71,8 @@ fun RoutineTable(navController: NavController) {
 @Composable
 fun RoutineTableContent(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
-    var exercisesList: List<Pair<String, Boolean>> = emptyList()
+    var routinesList: List<Pair<String, Boolean>> = emptyList()
+    var exercisesList: List<Map<String, Map<String, Int>>> = emptyList()
 
     var routineTableState by remember { mutableStateOf<Map<String, List<String>>?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -99,10 +100,9 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
     routineTableState?.forEach { (key, value) ->
         val routineDetails = value as List<*>
         val category = routineDetails[0] as? String ?: "Null"
-        val exercises = routineDetails[1] as? Map<String, Map<String, Int>>
         val completedFlag = routineDetails[2] as? Boolean ?: false
-        exercisesList = exercisesList + (category to completedFlag)
-
+        routinesList = routinesList + (category to completedFlag)
+        exercisesList = routineDetails[1] as List<Map<String, Map<String, Int>>>
     }
 
     Box(
@@ -145,32 +145,36 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
             ) {
                 RoutineWeekUncompleted(
                     weekDay = 1,
-                    exercises = exercisesList,
-                    onProgression = true
+                    exercises = routinesList,
+                    onProgression = true,
+                    exercisesList = exercisesList
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 2,
-                    exercises = exercisesList,
-                    onProgression = false
+                    exercises = routinesList,
+                    onProgression = false,
+                    exercisesList = exercisesList
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 3,
-                    exercises = exercisesList,
-                    onProgression = false
+                    exercises = routinesList,
+                    onProgression = false,
+                    exercisesList = exercisesList
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 4,
-                    exercises = exercisesList,
-                    onProgression = false
+                    exercises = routinesList,
+                    onProgression = false,
+                    exercisesList = exercisesList
                 )
             }
         }
