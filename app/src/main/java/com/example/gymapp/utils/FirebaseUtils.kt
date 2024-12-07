@@ -7,6 +7,8 @@ import androidx.navigation.NavController
 import com.example.gymapp.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import kotlinx.coroutines.tasks.await
 
 object FirebaseUtils{
     val auth: FirebaseAuth by lazy {
@@ -69,4 +71,34 @@ object FirebaseUtils{
     fun isUserLoggedIn(): Boolean {
         return auth.currentUser != null
     }
+
+    // Función para obtener los datos de las rutinas de ejercicios de la semana pasada por parámtro
+    suspend fun fetchRoutineTableAsJson(weekName: String = "Week1"): String? {
+        return try {
+            val user = auth.currentUser
+                ?: throw IllegalStateException("Authentication error. Please log in again")
+
+            val document = firestore.collection("Users")
+                .document(user.uid)
+                .collection("RoutineTable")
+                .document(weekName)
+                .get()
+                .await()
+
+            if (document.exists()) {
+                val data = document.data
+                if (data != null) {
+                    Gson().toJson(data)
+                } else {
+                    null
+                }
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 }

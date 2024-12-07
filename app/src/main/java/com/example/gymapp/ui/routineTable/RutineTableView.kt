@@ -12,9 +12,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -29,6 +35,8 @@ import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.routineWeek.RoutineWeekUncompleted
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.FirebaseUtils
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 @Composable
@@ -62,6 +70,41 @@ fun RoutineTable(navController: NavController) {
 
 @Composable
 fun RoutineTableContent(modifier: Modifier = Modifier) {
+    val scope = rememberCoroutineScope()
+    var exercisesList: List<Pair<String, Boolean>> = emptyList()
+
+    var routineTableState by remember { mutableStateOf<Map<String, List<String>>?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    // Cargar los datos de Firebase
+    LaunchedEffect(Unit) {
+        scope.launch {
+            try {
+                val json = FirebaseUtils.fetchRoutineTableAsJson("Week1")
+                if (json != null) {
+                    routineTableState = Gson().fromJson(json, Map::class.java) as Map<String, List<String>>?
+                    isLoading = false
+                } else {
+                    errorMessage = "No data for this week"
+                    isLoading = false
+                }
+            } catch (e: Exception) {
+                errorMessage = "Data loading error: ${e.message}"
+                isLoading = false
+            }
+        }
+    }
+
+    routineTableState?.forEach { (key, value) ->
+        val routineDetails = value as List<*>
+        val category = routineDetails[0] as? String ?: "Null"
+        val exercises = routineDetails[1] as? Map<String, Map<String, Int>>
+        val completedFlag = routineDetails[2] as? Boolean ?: false
+        exercisesList = exercisesList + (category to completedFlag)
+
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -76,67 +119,64 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
                 .graphicsLayer(alpha = 0.6f)
         )
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            RoutineWeekUncompleted(
-                weekDay = 1,
-                exercises = listOf(
-                    "legs" to false,
-                    "legs" to true,
-                    "legs" to false,
-                    "legs" to true,
-                    "legs" to false
-                ),
-                onProgression = true
-            )
+        if (isLoading) {
+            // Mostrar un indicador de carga
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Loading...")
+            }
+        } else if (errorMessage != null) {
+            // Mostrar el mensaje de error
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(errorMessage ?: "Unknown Error")
+            }
+        } else {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                RoutineWeekUncompleted(
+                    weekDay = 1,
+                    exercises = exercisesList,
+                    onProgression = true
+                )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            RoutineWeekUncompleted(
-                weekDay = 2,
-                exercises = listOf(
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false
-                ),
-                onProgression = false
-            )
+                RoutineWeekUncompleted(
+                    weekDay = 2,
+                    exercises = exercisesList,
+                    onProgression = false
+                )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            RoutineWeekUncompleted(
-                weekDay = 3,
-                exercises = listOf(
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false
-                ),
-                onProgression = false
-            )
+                RoutineWeekUncompleted(
+                    weekDay = 3,
+                    exercises = exercisesList,
+                    onProgression = false
+                )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(30.dp))
 
-            RoutineWeekUncompleted(
-                weekDay = 4,
-                exercises = listOf(
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false,
-                    "legs" to false
-                ),
-                onProgression = false
-            )
+                RoutineWeekUncompleted(
+                    weekDay = 4,
+                    exercises = exercisesList,
+                    onProgression = false
+                )
+            }
         }
     }
 }
+
 @Composable
 @Preview
 fun RoutineTablePreview(){
