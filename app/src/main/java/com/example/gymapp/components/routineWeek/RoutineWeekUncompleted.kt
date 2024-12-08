@@ -32,7 +32,6 @@ fun RoutineWeekUncompleted(
     weekDay: Int = 0,
     exercises: List<Pair<String, Boolean>> = emptyList(),
     onProgression: Boolean = false,
-    exercisesList: List<Map<String, Map<String, Int>>> = emptyList(),
     viewModel: ExercisesRoutineViewModel = viewModel()
 ){
     val weekColor = if (onProgression) GymRed else Black
