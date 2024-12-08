@@ -2,9 +2,11 @@ package com.example.gymapp.navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.gymapp.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.home.Home
@@ -38,6 +40,26 @@ fun AppNavegation(){
         }
         composable(route = AppScreens.RoutineTableScreen.route) {
             RoutineTable(navController = navController)
+        }
+        composable(
+            route = AppScreens.ExerciseRoutineWithParams.route,
+            arguments = listOf(
+                navArgument("routineName") { type = NavType.StringType },
+                navArgument("day") { type = NavType.IntType },
+                navArgument("exercisesJson") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val routineName = backStackEntry.arguments?.getString("routineName") ?: ""
+            val day = backStackEntry.arguments?.getInt("day") ?: 0
+            val exercisesJson = backStackEntry.arguments?.getString("exercisesJson") ?: ""
+
+            // Pasa los parámetros a la vista destino
+            ExerciseRoutineView(
+                routineName = routineName,
+                day = day,
+                exercises = exercisesJson,
+                navController = navController
+            )
         }
     }
 }

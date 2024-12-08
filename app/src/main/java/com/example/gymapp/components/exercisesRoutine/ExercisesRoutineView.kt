@@ -39,15 +39,21 @@ import com.example.gymapp.components.exercise.Exercise
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 
 @Composable
 fun ExerciseRoutineView(
     routineName: String = "",
     day: Int = 0,
-    exercises: List<String> = emptyList(),
+    exercises: String = "",
     viewModel: ExercisesRoutineViewModel = viewModel(),
     navController: NavController
 ) {
+    val gson = Gson()
+    val exercisesListType = object : TypeToken<List<Map<String, Map<String, Int>>>>() {}.type
+    val exercisesList: List<Map<String, Map<String, Int>>> = gson.fromJson(exercises, exercisesListType)
+
     val routine = viewModel.getRoutinesByName(routineName)
 
     Box(
@@ -107,18 +113,23 @@ fun ExerciseRoutineView(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = exercises.size.toString() + " " + stringResource(R.string.exercises),
+                text = exercisesList.size.toString() + " " + stringResource(R.string.exercises),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = Black,
                 modifier = Modifier.padding(start = 20.dp, bottom = 5.dp)
             )
 
-            exercises.forEach { exerciseName ->
+            exercisesList.forEach { exercise ->
+                val exerciseName = exercise.keys.first()
+                val details = exercise[exerciseName] ?: emptyMap()
+                val repetitions = details["repetitions"] ?: 0
+                val weight = details["weight"] ?: 0
+
                 Exercise(
                     exerciseName = exerciseName,
-                    repetitions = 12,
-                    weight = 90,
+                    repetitions = repetitions,
+                    weight = weight,
                     modifier = Modifier.padding(start = 20.dp, top = 10.dp, bottom = 10.dp)
                 )
 
