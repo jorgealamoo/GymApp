@@ -20,39 +20,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.GymYellow
 import com.example.gymapp.ui.theme.White
-import com.google.gson.Gson
 
 @Composable
-fun RoutineDay(
-    dayOfWeek: Int,
-    exerciseImage: Int,
-    exercise: Int,
-    completed: Boolean = false,
-    exerciseName: String = "",
-    exercisesList: List<Map<String, Map<String, Int>>> = emptyList(),
-    navController: NavController
-){
+fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boolean = false){
     val backgroundColor = if (completed) GymRed else GymYellow.copy(0.6f)
     val displayImage = if (completed) R.drawable.white_tick else exerciseImage
-
-    val gson = Gson()
-    val exercisesJson = gson.toJson(exercisesList)
 
     Column(
         modifier = Modifier
             .size(40.dp, 105.dp)
             .clip(RoundedCornerShape(5.dp))
             .background(backgroundColor)
-            .clickable {
-                navController.navigate(
-                    "exerciseRoutineView?$exerciseName=LegDay&day=$dayOfWeek&exercisesJson=$exercisesJson"
-                )
-            },
+            .clickable {  },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -81,10 +64,8 @@ fun RoutineDay(
     }
 }
 
-/*
 @Composable
 @Preview
-fun RoutineDayPreview(){
+fun RoutineDay(){
     RoutineDay(dayOfWeek = 1, exerciseImage = R.drawable.piernas, exercise = R.string.legs, false)
 }
-*/
