@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gymapp.navegation.AppNavegation
 import com.example.gymapp.ui.theme.GymAppTheme
+import com.example.gymapp.utils.FirebaseUtils
+import com.example.gymapp.utils.PreferencesManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
