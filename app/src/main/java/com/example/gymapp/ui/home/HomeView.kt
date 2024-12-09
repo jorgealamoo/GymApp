@@ -47,7 +47,9 @@ import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.card.Card
 import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
+import com.example.gymapp.components.profile_content.ProfileContent
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable
@@ -71,7 +73,7 @@ fun Home(navController: NavController, modifier: Modifier = Modifier){
                 )
             },
             content = { paddingValues ->
-                ContentHome(modifier = Modifier.padding(paddingValues))
+                ContentHome(modifier = Modifier.padding(paddingValues),navController = navController)
             },
             bottomBar = {
                 Footer(navController = navController)
@@ -84,13 +86,12 @@ fun Home(navController: NavController, modifier: Modifier = Modifier){
 @Composable
 fun ContentHome(modifier: Modifier = Modifier,
          profileImage: Int = R.drawable.user,
-         name: String = "Name",
-         surname: String = "Surname")
+                navController: NavController)
 {
     var expanded = remember { mutableStateOf(false) }
     val options = listOf("Las Palmas de Gran Canaria", "Santa Cruz de Tenerife", "Puerto del Rosario")
     var selectedOption = remember { mutableStateOf(options[0]) }
-
+    val user = PreferencesManager.getUser(navController.context)
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -128,13 +129,13 @@ fun ContentHome(modifier: Modifier = Modifier,
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(
-                    text = "$name $surname",
+                    text = "${user?.name} ${user?.surname}",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Card(1)
+            Card("${user?.points}")
             Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier

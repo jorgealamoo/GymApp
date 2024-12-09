@@ -28,7 +28,7 @@ import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 
 @Composable
-fun Card(points: Int = 0) {
+fun Card(points: String = "0") {
     Box(
         modifier = Modifier
             .size(315.dp, 180.dp)

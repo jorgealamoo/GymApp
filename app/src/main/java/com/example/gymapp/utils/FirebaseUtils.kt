@@ -54,7 +54,9 @@ object FirebaseUtils{
                         image = user.photoUrl?.toString() ?: "URL no disponible",
                         enrollment = document.getString("enrollment").toString(),
                         expirationEnrollment = document.getString("expirationEnrollment")
-                            .toString()
+                            .toString(),
+                        birthdate = document.getString("birthdate").toString(),
+                        points = document.getString("points").toString(),
                     )
                     PreferencesManager.saveUser(navController.context, userModel)
                 }

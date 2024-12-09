@@ -7,6 +7,8 @@ data class User(
     val email: String,
     val image: String,
     val enrollment: String,
-    val expirationEnrollment: String
+    val expirationEnrollment: String,
+    val birthdate: String,
+    val points: String
 )
 

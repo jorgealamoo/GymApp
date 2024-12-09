@@ -36,19 +36,11 @@ import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.profile_content.ProfileContent
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable
-fun Profile(
-    name: String = "Prueba",
-    surname: String = "Prueba",
-    email: String = "Prueba@gmail.com",
-    birthdate: String = "11/06/1942",
-    enrollmentDate: String = "11/06/1972",
-    currentEnrollmentExpiration: String = "11/06/1973",
-    navController: NavController,
-    profileImage: Int = R.drawable.user,
-){
+fun Profile(navController: NavController){
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -68,13 +60,6 @@ fun Profile(
             },
             content = { paddingValues ->
                 ContentProfile(
-                    name = name,
-                    surname = surname,
-                    email = email,
-                    birthdate = birthdate,
-                    enrollmentDate = enrollmentDate,
-                    currentEnrollmentExpiration = currentEnrollmentExpiration,
-                    profileImage = profileImage,
                     navController = navController,
                     modifier = Modifier.padding(paddingValues))
             },
@@ -86,16 +71,11 @@ fun Profile(
 }
 @Composable
 fun ContentProfile(
-    name: String = R.string.loren_ipsum.toString(),
-    surname: String = R.string.loren_ipsum.toString(),
-    email: String = R.string.loren_ipsum.toString(),
-    birthdate: String = R.string.loren_ipsum.toString(),
-    enrollmentDate: String = R.string.loren_ipsum.toString(),
-    currentEnrollmentExpiration: String = R.string.loren_ipsum.toString(),
     profileImage: Int = R.drawable.user,
     navController: NavController,
     modifier: Modifier = Modifier
     ) {
+    val user = PreferencesManager.getUser(navController.context)
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -117,23 +97,23 @@ fun ContentProfile(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            UserInfo(name, surname, profileImage)
+            UserInfo(user?.name.toString(), user?.surname.toString(), profileImage)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ProfileContent(title = R.string.email, email)
+            ProfileContent(title = R.string.email, user?.email.toString())
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ProfileContent(title = R.string.birthdate, birthdate)
+            ProfileContent(title = R.string.birthdate, user?.birthdate.toString())
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ProfileContent(title = R.string.enrollment_date, enrollmentDate)
+            ProfileContent(title = R.string.enrollment_date, user?.enrollment.toString())
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ProfileContent(title = R.string.current_expiration, currentEnrollmentExpiration)
+            ProfileContent(title = R.string.current_expiration, user?.expirationEnrollment.toString())
 
             Spacer(modifier = Modifier.height(25.dp))
 

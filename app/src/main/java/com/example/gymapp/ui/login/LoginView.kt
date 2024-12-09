@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -55,22 +56,25 @@ import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
-fun Login(navController: NavController){
+fun Login(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
     var showModal by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Box(
-
         modifier = Modifier
             .fillMaxSize()
             .background(White)
-            .clickable { keyboardController?.hide()}
+            .clickable { keyboardController?.hide() }
     ) {
-
+        // Fondo de la pantalla
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
@@ -79,72 +83,103 @@ fun Login(navController: NavController){
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
-
-        Column(
-            modifier = Modifier
-                .size(350.dp, 500.dp)
-                .padding(16.dp)
-                .clip(RoundedCornerShape(25.dp))
-                .background(GymRed.copy(alpha = 0.6f))
-                .align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.gymapplogo),
-                contentDescription = R.string.app_logo.toString(),
-                modifier = Modifier.size(140.dp)
-            )
-
-            if(FirebaseUtils.isUserLoggedIn()) navController.navigate("home_screen")
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            RoundTextField(R.string.username,email,{ email = it },Icons.Filled.Person)
-            Spacer(modifier = Modifier.height(16.dp))
-            RoundTextField(R.string.password,password,{ password = it },Icons.Filled.Lock,PasswordVisualTransformation())
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Button(
-                onClick = {
-                    login(email, password, navController) { isSuccess ->
-                    if (isSuccess) {
-                        navController.navigate("home_screen")
-                    } else {
-                        showModal = true
-                    }
-                }},
+        if (FirebaseUtils.isUserLoggedIn()){
+            navController.navigate("home_screen")
+        }
+        if (isLoading) {
+            LoadingScreen()
+        } else {
+            // Mostrar formulario de login
+            Column(
                 modifier = Modifier
-                    .width(170.dp)
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(Black)
-                ) {
-                Text(
-                    text = stringResource(id = R.string.login),
-                    color = White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    .size(350.dp, 500.dp)
+                    .padding(16.dp)
+                    .clip(RoundedCornerShape(25.dp))
+                    .background(GymRed.copy(alpha = 0.6f))
+                    .align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.gymapplogo),
+                    contentDescription = "Logo",
+                    modifier = Modifier.size(140.dp)
                 )
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                RoundTextField(R.string.username, email, { email = it }, Icons.Filled.Person)
+                Spacer(modifier = Modifier.height(16.dp))
+                RoundTextField(
+                    R.string.password,
+                    password,
+                    { password = it },
+                    Icons.Filled.Lock,
+                    PasswordVisualTransformation()
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            isLoading = true
+                            val success = FirebaseUtils.login(email, password, navController)
+                            isLoading = false
+                            if (success) {
+                                navController.navigate("home_screen")
+                            } else {
+                                showModal = true
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .width(170.dp)
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(Black)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.login),
+                        color = White,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
+        }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = stringResource(id = R.string.forgot_password),
-                color = Black,
-                fontSize = 16.sp,
-                textDecoration = TextDecoration.Underline
+        // Modal de error
+        if (showModal) {
+            InformationDialog(
+                R.string.login_result,
+                R.string.login_error,
+                onDismiss = { showModal = false }
             )
-
-            if (showModal) {
-                InformationDialog(
-                    R.string.login_result,
-                    R.string.login_error,
-                    onDismiss = { showModal = false })
-            }
         }
     }
 }
+
+@Composable
+fun LoadingScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.7f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            CircularProgressIndicator(color = GymRed)
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Cargando...",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
 
 @Composable
 fun RoundTextField(
