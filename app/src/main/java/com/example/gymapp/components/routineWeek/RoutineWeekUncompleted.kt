@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.components.exercisesRoutine.ExercisesRoutineViewModel
 import com.example.gymapp.components.routineDay.RoutineDay
@@ -32,7 +33,8 @@ fun RoutineWeekUncompleted(
     weekDay: Int = 0,
     exercises: List<Pair<String, Boolean>> = emptyList(),
     onProgression: Boolean = false,
-    viewModel: ExercisesRoutineViewModel = viewModel()
+    viewModel: ExercisesRoutineViewModel = viewModel(),
+    navController: NavController
 ){
     val weekColor = if (onProgression) GymRed else Black
 
@@ -77,7 +79,8 @@ fun RoutineWeekUncompleted(
                     dayOfWeek = index + 1,
                     exerciseImage = viewModel.getRoutinesByName(exerciseName).routineIcon,
                     exercise = viewModel.getRoutinesByName(exerciseName).routineString,
-                    completed = isCompleted
+                    completed = isCompleted,
+                    navController = navController
                 )
             }
 
@@ -88,6 +91,7 @@ fun RoutineWeekUncompleted(
     }
 }
 
+/*
 @Composable
 @Preview
 fun RoutineWeekUncompletedPreview(){
@@ -103,3 +107,4 @@ fun RoutineWeekUncompletedPreview(){
         onProgression = true
     )
 }
+ */

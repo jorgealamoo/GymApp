@@ -36,14 +36,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.components.exercise.Exercise
+import com.example.gymapp.navegation.AppScreens
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 
 @Composable
 fun ExerciseRoutineView(
-    routineName: String = "",
-    day: Int = 0,
+    routineName: String = "legs",
+    day: Int = 1,
     exercises: List<String> = emptyList(),
     viewModel: ExercisesRoutineViewModel = viewModel(),
     navController: NavController
@@ -131,7 +132,9 @@ fun ExerciseRoutineView(
         }
 
         IconButton(
-            onClick = { println("Return") },
+            onClick = {
+                navController.navigate(AppScreens.RoutineTableScreen.route)
+            },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(10.dp)

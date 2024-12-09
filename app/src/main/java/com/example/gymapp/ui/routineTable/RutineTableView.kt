@@ -59,7 +59,7 @@ fun RoutineTable(navController: NavController) {
                 )
             },
             content = { paddingValues ->
-                RoutineTableContent(modifier = Modifier.padding(paddingValues))
+                RoutineTableContent(modifier = Modifier.padding(paddingValues), navController = navController)
             },
             bottomBar = {
                 Footer(navController = navController)
@@ -69,7 +69,7 @@ fun RoutineTable(navController: NavController) {
 }
 
 @Composable
-fun RoutineTableContent(modifier: Modifier = Modifier) {
+fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavController) {
     val scope = rememberCoroutineScope()
     var exercisesList: List<Pair<String, Boolean>> = emptyList()
 
@@ -146,7 +146,8 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
                 RoutineWeekUncompleted(
                     weekDay = 1,
                     exercises = exercisesList,
-                    onProgression = true
+                    onProgression = true,
+                    navController = navController
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -154,7 +155,8 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
                 RoutineWeekUncompleted(
                     weekDay = 2,
                     exercises = exercisesList,
-                    onProgression = false
+                    onProgression = false,
+                    navController = navController
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -162,7 +164,8 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
                 RoutineWeekUncompleted(
                     weekDay = 3,
                     exercises = exercisesList,
-                    onProgression = false
+                    onProgression = false,
+                    navController = navController
                 )
 
                 Spacer(modifier = Modifier.height(30.dp))
@@ -170,15 +173,18 @@ fun RoutineTableContent(modifier: Modifier = Modifier) {
                 RoutineWeekUncompleted(
                     weekDay = 4,
                     exercises = exercisesList,
-                    onProgression = false
+                    onProgression = false,
+                    navController = navController
                 )
             }
         }
     }
 }
 
+/*
 @Composable
 @Preview
 fun RoutineTablePreview(){
     RoutineTableContent()
 }
+ */
