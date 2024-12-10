@@ -35,7 +35,6 @@ fun Header(
     onMenuClick: () -> Unit = { println("Menú clickeado por defecto") }
     ) {
 
-    val expanded = remember { mutableStateOf(true) }
     Column {
         Row(
             modifier = Modifier

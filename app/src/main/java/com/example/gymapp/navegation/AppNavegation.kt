@@ -2,9 +2,12 @@ package com.example.gymapp.navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.gymapp.components.activityInfo.ActivityInfoView
 import com.example.gymapp.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.home.Home
@@ -43,6 +46,17 @@ fun AppNavegation(){
         }
         composable(route = AppScreens.RoutineTableScreen.route) {
             RoutineTable(navController = navController)
+        }
+        composable(
+            route = AppScreens.ActivityInfoScreen.route,
+            arguments = listOf(
+                navArgument("dia") { type = NavType.StringType },
+                navArgument("id") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val dia = backStackEntry.arguments?.getString("dia") // Recibir `dia` como String
+            val id = backStackEntry.arguments?.getString("id")     // Recibir `id` como Int
+            ActivityInfoView(navController = navController, dia = dia, id = id)
         }
     }
 }

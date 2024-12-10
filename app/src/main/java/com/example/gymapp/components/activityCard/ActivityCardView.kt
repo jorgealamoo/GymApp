@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,10 +25,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gymapp.ui.theme.White
+import androidx.navigation.NavController
 import com.example.gymapp.R
+import com.example.gymapp.components.activityInfo.ActivityInfoView
 import com.example.gymapp.models.Exercise
 import com.example.gymapp.ui.theme.GymOrange
+import com.example.gymapp.ui.theme.GymRed
+import com.example.gymapp.ui.theme.White
 
 @Composable
 fun ActivityCardView (
@@ -33,9 +40,9 @@ fun ActivityCardView (
     totalCapacity: String = "0",
     available: String = "0",
     exerciseClass: String = "Invalid exercise",
-    exercise: Exercise,
     dia: String,
-    id: String
+    id: String,
+    navController: NavController
 )
 {
     Box(
@@ -44,9 +51,12 @@ fun ActivityCardView (
             .height(122.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(color = White.copy(alpha = 0.67f))
-            .clickable(onClick = {}),
+            .clickable(onClick = {
+                navController.navigate("activity_info_screen/${dia}/${id}")
+            }),
         contentAlignment = Alignment.CenterStart,
     ){
+
         Row (
             modifier = Modifier
                 .padding(start = 10.dp),
@@ -64,18 +74,26 @@ fun ActivityCardView (
                     .padding(start = 10.dp)
             ) {
                 Text(
-                    text = hora.toString(),
+                    text = hora,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
-
-                Text(
-                    text = (totalCapacity + "/" + available
-                            + " " + stringResource(id = R.string.spots)),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = GymOrange
-                )
+                if(totalCapacity.toInt() > available.toInt()) {
+                    Text(
+                        text = (totalCapacity + "/" + available
+                                + " " + stringResource(id = R.string.spots)),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = GymOrange
+                    )
+                }else{
+                    Text(
+                        text = ( stringResource(id = R.string.with_out)),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = GymRed
+                    )
+                }
 
                 Text(text = exerciseClass,
                     fontSize = 22.sp,
@@ -86,3 +104,5 @@ fun ActivityCardView (
         }
     }
 }
+
+

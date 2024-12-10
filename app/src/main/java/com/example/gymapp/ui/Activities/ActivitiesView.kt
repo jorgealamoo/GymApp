@@ -1,5 +1,7 @@
 package com.example.gymapp.ui.Activities
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,9 +36,11 @@ import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.week.WeekDaysSelector
 import com.example.gymapp.models.ExerciseRepository
+import com.example.gymapp.ui.login.LoadingScreen
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
 import kotlinx.coroutines.launch
+import org.json.JSONArray
 import org.json.JSONObject
 
 
@@ -75,16 +79,18 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
     var selectedDay by remember { mutableStateOf("M") }
     var classDataJson by remember { mutableStateOf<String?>(null) }
 
+
     val dayMap = mapOf(
         "M" to "Monday",
         "T" to "Tuesday",
         "W" to "Wednesday",
-        "R" to "Thrusday",
+        "R" to "Thursday",
         "F" to "Friday",
         "S" to "Saturday",
     )
 
     LaunchedEffect(selectedDay) {
+        Log.d("Prueba","{/TODO/}")
         classDataJson = FirebaseUtils.fetchClassForDay(dayMap[selectedDay].toString())
     }
 
@@ -102,7 +108,6 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
-
         Column(
             modifier = Modifier.verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -114,38 +119,38 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
                 onDaySelected = { day -> selectedDay = day }
             )
 
-            InsertActivity(classDataJson,selectedDay,navController)
+
+            InsertActivity(classDataJson, dayMap[selectedDay].toString(), navController)
         }
     }
+
 }
 
 
 @Composable
 fun InsertActivity(classDataJson: String?, selectedDay: String, navController: NavController,) {
+    if(classDataJson.isNullOrEmpty()) return
 
-    if (classDataJson.isNullOrEmpty()) return
+    val jsonArray = JSONArray(classDataJson)
+    for (i in 0 until jsonArray.length()) {
+        val document = jsonArray.getJSONObject(i)
+        val documentId = document.getString("documentId")
+        val data = document.getJSONObject("data")
 
-    val jsonObject = JSONObject(classDataJson) // Convertimos el JSON en un JSONObject
-    val keys = jsonObject.keys()              // Obtenemos las claves (nombres de ejercicios)
+        val hora = data.getString("Hora")
+        val disponibilidad = data.getString("Disponibilidad")
+        val ocupado = data.getString("Ocupado")
+        val name = data.getString("Name")
 
-        keys.forEach { key ->
-            val exerciseJson = jsonObject.getJSONObject(key) // Obtenemos el JSON de cada ejercicio
-            val hora = exerciseJson.getString("Hora")
-            val disponibilidad = exerciseJson.getString("Disponibilidad")
-            val ocupado = exerciseJson.getString("Ocupado")
-            val exercise = ExerciseRepository.getExerciseByName(key)
-                exercise?.let {
-                    ActivityCardView(
-                        image = exercise.imageResId,
-                        hora = hora,
-                        totalCapacity = disponibilidad,
-                        exerciseClass = key,
-                        available = ocupado,
-                        exercise = exercise,
-                        dia = selectedDay,
-                        id = exerciseJson.getString("id")
-                    )
-                }
-        }
+        ActivityCardView(
+            hora = hora,
+            totalCapacity = disponibilidad,
+            exerciseClass = name,
+            available = ocupado,
+            dia = selectedDay,
+            id = documentId,
+            navController = navController
+        )
+    }
 }
 
