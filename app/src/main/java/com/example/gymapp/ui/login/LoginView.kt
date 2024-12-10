@@ -1,6 +1,5 @@
 package com.example.gymapp.ui.login
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,22 +39,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.components.InformationDialog
+import com.example.gymapp.components.InformationDialog.InformationDialog
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -74,7 +69,6 @@ fun Login(navController: NavController) {
             .background(White)
             .clickable { keyboardController?.hide() }
     ) {
-        // Fondo de la pantalla
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
@@ -83,13 +77,9 @@ fun Login(navController: NavController) {
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
-        if (FirebaseUtils.isUserLoggedIn()){
-            navController.navigate("home_screen")
-        }
         if (isLoading) {
             LoadingScreen()
         } else {
-            // Mostrar formulario de login
             Column(
                 modifier = Modifier
                     .size(350.dp, 500.dp)
@@ -148,7 +138,6 @@ fun Login(navController: NavController) {
             }
         }
 
-        // Modal de error
         if (showModal) {
             InformationDialog(
                 R.string.login_result,
@@ -206,12 +195,4 @@ fun RoundTextField(
         ),
         visualTransformation = visualTransformation
     )
-}
-fun login(
-    email: String,
-    password: String,
-    navController: NavController,
-    onResult: (Boolean) -> Unit
-) {
-        onResult(FirebaseUtils.login(email, password, navController))
 }

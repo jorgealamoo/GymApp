@@ -49,6 +49,7 @@ import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.profile_content.ProfileContent
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.FirebaseUtils
 import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 

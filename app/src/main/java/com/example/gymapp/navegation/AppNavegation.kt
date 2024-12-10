@@ -15,11 +15,16 @@ import com.example.gymapp.ui.pointsStore.PointsStore
 import com.example.gymapp.ui.profile.Profile
 import com.example.gymapp.ui.routineTable.RoutineTable
 import com.example.gymapp.ui.theme.GymAppTheme
+import com.example.gymapp.utils.FirebaseUtils
 
 @Composable
 fun AppNavegation(){
     val navController = rememberNavController()
-    NavHost(navController=navController, startDestination = AppScreens.LoginScreen.route){
+    var destination = AppScreens.LoginScreen.route
+    if(FirebaseUtils.isUserLoggedIn()){
+        destination = AppScreens.HomeScreen.route
+    }
+    NavHost(navController=navController, startDestination = destination){
         composable(route = AppScreens.Activity.route) {
             Activity(navController = navController)
         }

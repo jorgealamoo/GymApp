@@ -17,6 +17,11 @@ object PreferencesManager {
         editor.apply()
     }
 
+    fun isUserSaved(context: Context): Boolean {
+        val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.contains(USER_KEY)
+    }
+
     fun getUser(context: Context): User? {
         val sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val userJson = sharedPreferences.getString(USER_KEY, null)

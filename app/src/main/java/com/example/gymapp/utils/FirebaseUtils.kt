@@ -19,50 +19,48 @@ object FirebaseUtils{
         FirebaseFirestore.getInstance()
     }
 
-    fun login(email: String, password: String, navController: NavController): Boolean {
-        var result: Boolean = false
 
-        if (auth.currentUser != null) {
-            return true
-        }
-        if(email.isBlank() || password.isBlank()){
-            return result
-        }else {
-            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    result = false
-                } else {
-                    loadDataUser(navController)
-                    result = true
-                }
-            }
+    suspend fun login(email: String, password: String, navController: NavController): Boolean {
+        var result = false
+        try {
+            FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email, password).await()
+            loadDataUser(navController)
+            result = true
+        } catch (e: Exception) {
+           result = false
         }
         return result
     }
 
-    private fun loadDataUser(navController: NavController) {
+    private suspend fun loadDataUser(navController: NavController) {
+        val auth = FirebaseAuth.getInstance()
+        val firestore = FirebaseFirestore.getInstance()
+
         val user = auth.currentUser
-        if(user != null) {
-            firestore.collection("Users").document(user.uid)
-                .get().addOnSuccessListener { document ->
+        if (user != null) {
+            try {
+                val document = firestore.collection("Users").document(user.uid).get().await()
                 if (document.exists()) {
                     val userModel = User(
                         uid = user.uid,
-                        name = document.getString("name").toString(),
-                        surname = document.getString("surname").toString(),
-                        email = user.email.toString(),
-                        image = user.photoUrl?.toString() ?: "URL no disponible",
-                        enrollment = document.getString("enrollment").toString(),
-                        expirationEnrollment = document.getString("expirationEnrollment")
-                            .toString(),
-                        birthdate = document.getString("birthdate").toString(),
-                        points = document.getString("points").toString(),
+                        name = document.getString("name").orEmpty(),
+                        surname = document.getString("surname").orEmpty(),
+                        email = user.email.orEmpty(),
+                        image = "",
+                        enrollment = document.getString("enrollment").orEmpty(),
+                        expirationEnrollment = document.getString("expirationEnrollment").orEmpty(),
+                        birthdate = document.getString("birthdate").orEmpty(),
+                        points = document.getString("points").orEmpty(),
                     )
                     PreferencesManager.saveUser(navController.context, userModel)
                 }
+            } catch (e: Exception) {
+                Log.e("loadDataUser", "Error al cargar los datos del usuario: ${e.message}")
             }
         }
     }
+
 
     // Función para cerrar sesión
     fun logout() {
@@ -103,4 +101,7 @@ object FirebaseUtils{
         }
     }
 
+    suspend fun fetchClassForDay(dayOfWeek: String): String? {
+
+    }
 }
