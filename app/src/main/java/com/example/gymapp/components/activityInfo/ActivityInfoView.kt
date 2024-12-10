@@ -155,7 +155,14 @@ fun ActivityInfoView(navController: NavHostController,
             if (isAdded){
                 Button(
                     onClick = {
-
+                        scope.launch {
+                            unSubscribeActivity(
+                                id = id.toString(),
+                                day = dia.toString(),
+                                ocupado = exerciseJsonObject?.getString("Ocupado")?.toInt() ?: 0
+                            )
+                            isAdded = false
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
                     shape = RoundedCornerShape(10.dp),
@@ -177,7 +184,7 @@ fun ActivityInfoView(navController: NavHostController,
                     Button(
                         onClick = {
                             scope.launch {
-                                suscribeToActivity(
+                                subscribeToActivity(
                                     id = id.toString(),
                                     day = dia.toString(),
                                     ocupado = exerciseJsonObject?.getString("Ocupado")?.toInt() ?: 0
@@ -206,7 +213,13 @@ fun ActivityInfoView(navController: NavHostController,
     }
 }
 
-suspend fun suscribeToActivity(day: String, id: String, ocupado: Int) {
+suspend fun unSubscribeActivity(id: String, day: String, ocupado: Int) {
+    val ocupado = ocupado - 1
+    FirebaseUtils.updateField(day,id,"Ocupado",ocupado)
+    FirebaseUtils.activityUnsuscribe(day,id)
+}
+
+suspend fun subscribeToActivity(day: String, id: String, ocupado: Int) {
     val ocupado = ocupado + 1
     FirebaseUtils.updateField(day,id,"Ocupado",ocupado)
     FirebaseUtils.activitySuscribe(day,id)

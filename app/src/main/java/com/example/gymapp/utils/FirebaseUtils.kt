@@ -219,7 +219,7 @@ object FirebaseUtils{
         }
     }
 
-    suspend fun activityUnsuscribe(mapField: String, arrayField: String, value: Any): Boolean {
+    suspend fun activityUnsuscribe(arrayField: String, value: Any): Boolean {
         return try {
             // Usamos arrayRemove para eliminar un valor del array dentro del Map
             val user = auth.currentUser
