@@ -64,5 +64,9 @@
     <string name="dips">Dips</string>
     <string name="benchDips">Bench Dips</string>
     <string name="benchPress">Bench Press</string>
-
+    <string name="russianTwists">Russian Twists</string>
+    <string name="crunches">Crunches</string>
+    <string name="legRaises">Leg Raises</string>
+    <string name="plank">Plank</string>
+    <string name="mountainClimbers">Mountain Climbers</string>
 </resources>

@@ -54,7 +54,7 @@ import com.google.gson.Gson
 
 @Composable
 fun ExerciseRoutineView(
-    routineName: String = "chest",
+    routineName: String = "abs",
     day: Int = 1,
     exercises: List<String> = emptyList(),
     viewModel: ExercisesRoutineViewModel = viewModel(),
