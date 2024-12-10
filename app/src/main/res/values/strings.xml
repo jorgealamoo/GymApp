@@ -74,5 +74,10 @@
     <string name="pullUps">Pull Ups</string>
     <string name="hammerCurl">Hammer Curl</string>
     <string name="dumbbellRow">Dumbbell Row</string>
-
+    <string name="arnoldPress">Arnold Press</string>
+    <string name="dumbbellBicepCurl">Dumbbell Bicep Curl</string>
+    <string name="facePulls">Face Pulls</string>
+    <string name="overheadPress">Overhead Press</string>
+    <string name="lateralRaises">Lateral Raises</string>
+    <string name="tricepsRopeExtensions">Triceps Rope Extensions</string>
 </resources>
