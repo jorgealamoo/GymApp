@@ -203,14 +203,14 @@ object FirebaseUtils{
         }
     }
 
-    suspend fun activitySuscribe(mapField: String, arrayField: String, value: Any): Boolean {
+    suspend fun activitySuscribe(arrayField: String, value: Any): Boolean {
         return try {
             val user = auth.currentUser
                 ?: throw IllegalStateException("Authentication error. Please log in again")
 
             firestore.collection("Users")
                 .document(user.uid)
-                .update("$mapField.$arrayField", FieldValue.arrayUnion(value))
+                .update("SuscribeActivity.$arrayField", FieldValue.arrayUnion(value))
                 .await()
             true
         } catch (e: Exception) {
@@ -227,7 +227,7 @@ object FirebaseUtils{
 
             firestore.collection("Users")
                 .document(user.uid)
-                .update("$mapField.$arrayField", FieldValue.arrayRemove(value))
+                .update("SuscribeActivity.$arrayField", FieldValue.arrayRemove(value))
                 .await()
             true
         } catch (e: Exception) {
