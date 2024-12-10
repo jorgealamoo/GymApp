@@ -33,6 +33,7 @@ fun RoutineDay(
     dayOfWeek: Int,
     exerciseImage: Int,
     exercise: Int,
+    routineName: String,
     completed: Boolean = false,
     navController: NavController,
     exercisesList: List<Map<String, Map<String, Int>>> = emptyList()
@@ -47,7 +48,7 @@ fun RoutineDay(
             .background(backgroundColor)
             .clickable {
                 val exercisesJson = Gson().toJson(exercisesList)
-                navController.navigate(AppScreens.ExerciseRoutine.createRoute(exercisesJson))
+                navController.navigate(AppScreens.ExerciseRoutine.createRoute(routineName, dayOfWeek, exercisesJson))
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

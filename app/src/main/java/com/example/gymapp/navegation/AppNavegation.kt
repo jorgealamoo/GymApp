@@ -35,7 +35,10 @@ fun AppNavegation(){
         }
         composable(
             route = AppScreens.ExerciseRoutine.route,
-            arguments = listOf(navArgument("exercisesList") { type = NavType.StringType }
+            arguments = listOf(
+                navArgument("routineName") { type = NavType.StringType },
+                navArgument("dayOfWeek") { type = NavType.IntType },
+                navArgument("exercisesList") { type = NavType.StringType }
             )) {backStackEntry ->
             ExerciseRoutineView(navController = navController, navBackStackEntry = backStackEntry)
         }

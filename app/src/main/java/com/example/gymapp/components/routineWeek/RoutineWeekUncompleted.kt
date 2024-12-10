@@ -82,7 +82,8 @@ fun RoutineWeekUncompleted(
                     exercise = viewModel.getRoutinesByName(exerciseName).routineString,
                     completed = isCompleted,
                     exercisesList = exercisesList,
-                    navController = navController
+                    navController = navController,
+                    routineName = exerciseName
                 )
             }
 

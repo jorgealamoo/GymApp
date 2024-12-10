@@ -54,13 +54,13 @@ import com.google.gson.Gson
 
 @Composable
 fun ExerciseRoutineView(
-    routineName: String = "arms",
-    day: Int = 1,
     exercises: List<String> = emptyList(),
     viewModel: ExercisesRoutineViewModel = viewModel(),
     navController: NavController,
     navBackStackEntry: NavBackStackEntry
 ) {
+    val routineName = navBackStackEntry.arguments?.getString("routineName") ?: "Unknown"
+    val day = navBackStackEntry.arguments?.getInt("dayOfWeek") ?: 1
     val routine = viewModel.getRoutinesByName(routineName)
     var exercisesList by remember { mutableStateOf<List<Map<String, Map<String, Int>>>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
