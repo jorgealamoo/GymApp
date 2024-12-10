@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gymapp.R
@@ -71,7 +70,8 @@ fun RoutineTable(navController: NavController) {
 @Composable
 fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavController) {
     val scope = rememberCoroutineScope()
-    var exercisesList: List<Pair<String, Boolean>> = emptyList()
+    var routinesList: List<Pair<String, Boolean>> = emptyList()
+    var exercisesList: List<Map<String, Map<String, Int>>> = emptyList()
 
     var routineTableState by remember { mutableStateOf<Map<String, List<String>>?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -101,8 +101,10 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
         val category = routineDetails[0] as? String ?: "Null"
         val exercises = routineDetails[1] as? Map<String, Map<String, Int>>
         val completedFlag = routineDetails[2] as? Boolean ?: false
-        exercisesList = exercisesList + (category to completedFlag)
-
+        routinesList = routinesList + (category to completedFlag)
+        if (exercises != null) {
+            exercisesList = exercisesList + exercises
+        }
     }
 
     Box(
@@ -145,8 +147,9 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
             ) {
                 RoutineWeekUncompleted(
                     weekDay = 1,
-                    exercises = exercisesList,
+                    exercises = routinesList,
                     onProgression = true,
+                    exercisesList = exercisesList,
                     navController = navController
                 )
 
@@ -154,8 +157,9 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
 
                 RoutineWeekUncompleted(
                     weekDay = 2,
-                    exercises = exercisesList,
+                    exercises = routinesList,
                     onProgression = false,
+                    exercisesList = exercisesList,
                     navController = navController
                 )
 
@@ -163,8 +167,9 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
 
                 RoutineWeekUncompleted(
                     weekDay = 3,
-                    exercises = exercisesList,
+                    exercises = routinesList,
                     onProgression = false,
+                    exercisesList = exercisesList,
                     navController = navController
                 )
 
@@ -172,8 +177,9 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
 
                 RoutineWeekUncompleted(
                     weekDay = 4,
-                    exercises = exercisesList,
+                    exercises = routinesList,
                     onProgression = false,
+                    exercisesList = exercisesList,
                     navController = navController
                 )
             }

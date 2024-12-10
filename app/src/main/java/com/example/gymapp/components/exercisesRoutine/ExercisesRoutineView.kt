@@ -1,7 +1,9 @@
 package com.example.gymapp.components.exercisesRoutine
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +24,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.components.exercise.Exercise
@@ -40,6 +48,9 @@ import com.example.gymapp.navegation.AppScreens
 import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.FirebaseUtils
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
 
 @Composable
 fun ExerciseRoutineView(
@@ -47,10 +58,105 @@ fun ExerciseRoutineView(
     day: Int = 1,
     exercises: List<String> = emptyList(),
     viewModel: ExercisesRoutineViewModel = viewModel(),
-    navController: NavController
+    navController: NavController,
+    navBackStackEntry: NavBackStackEntry
 ) {
     val routine = viewModel.getRoutinesByName(routineName)
+    var exercisesList by remember { mutableStateOf<List<Map<String, Map<String, Int>>>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    LaunchedEffect(Unit) {
+        try {
+            val json = FirebaseUtils.fetchRoutineTableAsJson("Week1")
+            Log.d("FirebaseData", "JSON: $json")
+
+            if (json != null) {
+                val routineTableState: Map<String, List<Any>> = Gson().fromJson(json, object : TypeToken<Map<String, List<Any>>>() {}.type)
+                Log.d("FirebaseData", "Parsed Data: $routineTableState")
+
+                val filteredExercises = routineTableState
+                    .filter { (_, details) ->
+                        // Verifica si la categoría coincide
+                        val category = details.getOrNull(0) as? String ?: ""
+                        Log.d("FirebaseData", "Category: $category")
+                        category == routineName
+                    }
+                    .flatMap { (_, details) ->
+                        val exercises = details.getOrNull(1) as? Map<String, Map<String, Int>> ?: emptyMap()
+                        Log.d("FirebaseData", "Exercises: $exercises")
+
+                        exercises.map { (exerciseName, exerciseDetails) ->
+                            mapOf(exerciseName to exerciseDetails)
+                        }
+                    }
+
+                exercisesList = filteredExercises
+                Log.d("FirebaseData", "Filtered Exercises: $exercisesList")
+            } else {
+                errorMessage = "No data found for Week1"
+            }
+        } catch (e: Exception) {
+            errorMessage = "Error loading data: ${e.message}"
+            Log.e("FirebaseData", "Error: ${e.message}", e)
+        } finally {
+            isLoading = false
+        }
+    }
+
+    if (isLoading) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = "Loading...", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
+    } else if (errorMessage != null) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = errorMessage ?: "Unknown error", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = "Exercises for $routineName:",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            exercisesList.forEach { exercise ->
+                exercise.forEach { (exerciseName, details) ->
+                    Text(
+                        text = "Exercise: $exerciseName",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                    Log.d("FirebaseData", "Details: $details")
+                    details.forEach { (key, value) ->
+                        Log.d("FirebaseData", "Exercise: $exerciseName, Key: $key, Value: $value")
+                        Text(
+                            text = "${key.toString()}: ${value.toString()}",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Light,
+                            modifier = Modifier.padding(start = 16.dp, bottom = 4.dp)
+                        )
+                    }
+
+                }
+            }
+        }
+    }
+
+/*
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -168,4 +274,6 @@ fun ExerciseRoutineView(
             )
         }
     }
+
+ */
 }

@@ -26,9 +26,17 @@ import com.example.gymapp.navegation.AppScreens
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.GymYellow
 import com.example.gymapp.ui.theme.White
+import com.google.gson.Gson
 
 @Composable
-fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boolean = false, navController: NavController){
+fun RoutineDay(
+    dayOfWeek: Int,
+    exerciseImage: Int,
+    exercise: Int,
+    completed: Boolean = false,
+    navController: NavController,
+    exercisesList: List<Map<String, Map<String, Int>>> = emptyList()
+){
     val backgroundColor = if (completed) GymRed else GymYellow.copy(0.6f)
     val displayImage = if (completed) R.drawable.white_tick else exerciseImage
 
@@ -38,7 +46,8 @@ fun RoutineDay(dayOfWeek: Int, exerciseImage: Int, exercise: Int, completed: Boo
             .clip(RoundedCornerShape(5.dp))
             .background(backgroundColor)
             .clickable {
-                navController.navigate(AppScreens.ExerciseRoutine.route)
+                val exercisesJson = Gson().toJson(exercisesList)
+                navController.navigate(AppScreens.ExerciseRoutine.createRoute(exercisesJson))
             },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

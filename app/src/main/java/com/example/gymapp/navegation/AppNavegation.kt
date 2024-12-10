@@ -2,9 +2,11 @@ package com.example.gymapp.navegation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.gymapp.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.home.Home
@@ -24,8 +26,11 @@ fun AppNavegation(){
         composable(route = AppScreens.ProfileScreen.route) {
             Profile(navController = navController)
         }
-        composable(route = AppScreens.ExerciseRoutine.route) {
-            ExerciseRoutineView(navController = navController)
+        composable(
+            route = AppScreens.ExerciseRoutine.route,
+            arguments = listOf(navArgument("exercisesList") { type = NavType.StringType }
+            )) {backStackEntry ->
+            ExerciseRoutineView(navController = navController, navBackStackEntry = backStackEntry)
         }
         composable(route = AppScreens.HomeScreen.route) {
             Home(navController = navController)
