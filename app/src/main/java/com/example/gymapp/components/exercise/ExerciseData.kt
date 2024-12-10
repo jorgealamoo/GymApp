@@ -22,4 +22,9 @@ val exerciseList = listOf(
     Exercise("legRaises", R.drawable.legraises, R.string.legRaises),
     Exercise("plank", R.drawable.plank, R.string.plank),
     Exercise("mountainClimbers", R.drawable.mountainclimbers, R.string.mountainClimbers),
+    Exercise("latPulldown", R.drawable.latpulldown, R.string.latPulldown), // back
+    Exercise("barbellRow", R.drawable.barbellrow, R.string.barbellRow),
+    Exercise("pullUps", R.drawable.pulups, R.string.pullUps),
+    Exercise("hammerCurl", R.drawable.hammercurl, R.string.hammerCurl),
+    Exercise("dumbbellRow", R.drawable.dumbbellrow, R.string.dumbbellRow),
 )

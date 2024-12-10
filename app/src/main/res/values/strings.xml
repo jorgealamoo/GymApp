@@ -69,4 +69,10 @@
     <string name="legRaises">Leg Raises</string>
     <string name="plank">Plank</string>
     <string name="mountainClimbers">Mountain Climbers</string>
+    <string name="latPulldown">Lat Pulldown</string>
+    <string name="barbellRow">Barbell Row</string>
+    <string name="pullUps">Pull Ups</string>
+    <string name="hammerCurl">Hammer Curl</string>
+    <string name="dumbbellRow">Dumbbell Row</string>
+
 </resources>
