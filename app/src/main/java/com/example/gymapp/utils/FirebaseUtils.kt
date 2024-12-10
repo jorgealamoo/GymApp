@@ -102,6 +102,27 @@ object FirebaseUtils{
     }
 
     suspend fun fetchClassForDay(dayOfWeek: String): String? {
+        return try {
+            val document = firestore.collection("Class")
+                .document(dayOfWeek)
+                .get()
+                .await()
 
+            if (document.exists()) {
+                val data = document.data
+                if (data != null) {
+                    Gson().toJson(data)
+                } else {
+                    null
+                }
+            } else {
+                Log.w("fetchClassForDay", "No existe el documento para el día: $dayOfWeek")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("fetchClassForDay", "Error al obtener la clase del día: ${e.message}")
+            null
+        }
     }
+
 }

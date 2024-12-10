@@ -17,9 +17,11 @@ import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.GymYellow
 
 @Composable
-fun WeekDaysSelector() {
-    val days = listOf("M", "T", "W", "R", "F", "S", "U")
-    var selectedDay by remember { mutableStateOf<String?>("M") }
+fun WeekDaysSelector(
+    selectedDay: String,
+    onDaySelected: (String) -> Unit
+) {
+    val days = listOf("M", "T", "W", "R", "F", "S")
 
     Row(
         modifier = Modifier
@@ -31,12 +33,12 @@ fun WeekDaysSelector() {
         days.forEach { day ->
             Box(
                 modifier = Modifier
-                    .size(40.dp) // Tamaño de cada día
+                    .size(40.dp)
                     .background(
                         color = if (selectedDay == day) GymRed else Color.Transparent,
-                        shape = CircleShape // Forma redonda
+                        shape = CircleShape
                     )
-                    .clickable { selectedDay = day }
+                    .clickable { onDaySelected(day) } // Notificar cambio al padre
                     .padding(8.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -51,8 +53,3 @@ fun WeekDaysSelector() {
     }
 }
 
-@Preview
-@Composable
-fun PreviewWeekDaysSelector() {
-    WeekDaysSelector()
-}

@@ -16,27 +16,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.R
+import com.example.gymapp.models.Exercise
 import com.example.gymapp.ui.theme.GymOrange
 
 @Composable
-fun ActivityCardView (image:Int = R.drawable.image_removebg_preview, hora: String = "00/00", totalCapacity: Int = 0, ability: Int = 0,
-                      exerciseClass: String ="Invalid exercise", studio: String = "Studio X",content: @Composable () -> Unit = {}) {
+fun ActivityCardView (
+    image: Int = R.drawable.image_removebg_preview,
+    hora: String = "00/00",
+    totalCapacity: String = "0",
+    available: String = "0",
+    exerciseClass: String = "Invalid exercise",
+    exercise: Exercise,
+    dia: String,
+    id: String
+)
+{
     Box(
         modifier = Modifier
             .width(315.dp)
             .height(122.dp)
             .clip(RoundedCornerShape(25.dp))
             .background(color = White.copy(alpha = 0.67f))
-            .clickable(onClick = {content}),
+            .clickable(onClick = {}),
         contentAlignment = Alignment.CenterStart,
     ){
         Row (
@@ -55,22 +63,14 @@ fun ActivityCardView (image:Int = R.drawable.image_removebg_preview, hora: Strin
                 modifier = Modifier
                     .padding(start = 10.dp)
             ) {
-                if (matchesFormat(hora)) {
-                    Text(
-                        text = hora.toString(),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }else{
-                    Text(
-                        text = "Invalid Format",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Red
-                    )
-                }
                 Text(
-                    text = (totalCapacity.toString() + "/" + ability.toString()
+                    text = hora.toString(),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = (totalCapacity + "/" + available
                             + " " + stringResource(id = R.string.spots)),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
@@ -82,20 +82,7 @@ fun ActivityCardView (image:Int = R.drawable.image_removebg_preview, hora: Strin
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 10.dp)
                 )
-                Text(text = studio,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold)
             }
         }
     }
-}
-fun matchesFormat(input: String): Boolean {
-    val regex = Regex("^\\d{2}/\\d{2}$")
-    return regex.matches(input)
-}
-
-@Preview
-@Composable
-fun PreviewClassCard() {
-    ActivityCardView()
 }
