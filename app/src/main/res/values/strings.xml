@@ -58,4 +58,11 @@
     <string name="sideLunges">Side Lunges</string>
     <string name="wallSit">Wall Sit</string>
     <string name="lunges">Lunges</string>
+    <string name="inclineDumbbelPress">Incline Dumbbell Press</string>
+    <string name="skullCrushers">Skull Crushers</string>
+    <string name="dumbbellFlyes">Dumbbell Flyes</string>
+    <string name="dips">Dips</string>
+    <string name="benchDips">Bench Dips</string>
+    <string name="benchPress">Bench Press</string>
+
 </resources>
