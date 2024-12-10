@@ -36,9 +36,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.gymapp.R
 import com.example.gymapp.models.Exercise
 import com.example.gymapp.models.ExerciseRepository
@@ -122,7 +125,7 @@ fun ActivityInfoView(navController: NavHostController,
                         Image(
                             painter = painterResource(R.drawable.close),
                             contentDescription = stringResource(R.string.close),
-                            modifier = Modifier.size(38.dp)
+                            modifier = Modifier.height(38.dp)
                         )
                     }
                 }
@@ -138,11 +141,12 @@ fun ActivityInfoView(navController: NavHostController,
 
 
                 Image(
-                    painter = painterResource(R.drawable.image_removebg_preview),
+                    painter = painterResource(exerciseData?.image ?: R.drawable.clases_gap),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .size(400.dp, 300.dp)
+                        .fillMaxWidth()
+                        .height(300.dp)
                         .padding(top = 20.dp)
                         .graphicsLayer(alpha = 0.5f)
                 )
@@ -241,18 +245,27 @@ fun ActivityDescription(description: String){
     ) {
         Text(
             text = stringResource(R.string.description),
-            fontSize = 14.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = GymRed,
             modifier = Modifier.padding(15.dp, 15.dp, 0.dp, 0.dp)
         )
 
+        Spacer(modifier = Modifier.height(10.dp))
+
         Text(
             text = description,
-            fontSize = 14.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
             color = Black,
             modifier = Modifier.padding(start = 15.dp, top = 3.dp, end = 15.dp, bottom = 15.dp)
         )
     }
+}
+
+@Preview
+@Composable
+fun preview(){
+    var navController = rememberNavController()
+    ActivityInfoView(navController = navController, dia = "Martes", id = "pepe")
 }

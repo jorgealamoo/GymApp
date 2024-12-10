@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,15 +23,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.gymapp.R
-import com.example.gymapp.components.activityInfo.ActivityInfoView
-import com.example.gymapp.models.Exercise
+import com.example.gymapp.components.exercise.Exercise
+import com.example.gymapp.models.ExerciseRepository
 import com.example.gymapp.ui.theme.GymOrange
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 
 @Composable
 fun ActivityCardView (
-    image: Int = R.drawable.image_removebg_preview,
     hora: String = "00/00",
     totalCapacity: String = "0",
     available: String = "0",
@@ -56,13 +51,13 @@ fun ActivityCardView (
             }),
         contentAlignment = Alignment.CenterStart,
     ){
-
+        val exercise = ExerciseRepository.getExerciseByName(exerciseClass)
         Row (
             modifier = Modifier
                 .padding(start = 10.dp),
         ){
             Image(
-                painter = painterResource(id = image),
+                painter = painterResource(id = exercise?.imageResId ?: R.drawable.close),
                 contentDescription = "TODO",
                 alignment = Alignment.Center,
                 modifier = Modifier
