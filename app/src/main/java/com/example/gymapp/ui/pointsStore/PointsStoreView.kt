@@ -35,6 +35,7 @@ import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.pointsProductCard.PointsProductCard
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,7 +58,7 @@ fun PointsStore(navController: NavController){
                 )
             },
             content = { paddingValues ->
-                ContentPointsStore(modifier = Modifier.padding(paddingValues))
+                ContentPointsStore(modifier = Modifier.padding(paddingValues), navController = navController)
             },
             bottomBar = {
                 Footer(navController = navController)
@@ -80,8 +81,10 @@ fun ContentPointsStore(
         R.string.loren_ipsum,
         R.string.loren_ipsum,
         R.string.loren_ipsum
-    )
+    ),
+    navController: NavController
 ){
+    val user = PreferencesManager.getUser(navController.context)
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -105,7 +108,7 @@ fun ContentPointsStore(
             Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                text = stringResource(R.string.your_points) + " " + points,
+                text = stringResource(R.string.your_points) + " ${user?.points}",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = GymRed
@@ -122,8 +125,10 @@ fun ContentPointsStore(
     }
 }
 
+/*
 @Composable
 @Preview
 fun PointsStorePreview(){
     ContentPointsStore()
 }
+*/
