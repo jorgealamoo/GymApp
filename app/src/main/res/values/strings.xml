@@ -51,4 +51,11 @@
     <string name="with_out">No places</string>
     <string name="hora">"Hour: "</string>
     <string name="reserved">Reserved!</string>
+    <string name="calfRaises">Calf Raises</string>
+    <string name="gluteBridge">Glute Bridge</string>
+    <string name="deadlifts">Deadlifts</string>
+    <string name="squats">Squats</string>
+    <string name="sideLunges">Side Lunges</string>
+    <string name="wallSit">Wall Sit</string>
+    <string name="lunges">Lunges</string>
 </resources>

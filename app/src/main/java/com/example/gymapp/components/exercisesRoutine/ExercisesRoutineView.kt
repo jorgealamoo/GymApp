@@ -199,6 +199,8 @@ fun ExerciseRoutineView(
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(90.dp))
                 }
 
                 IconButton(
