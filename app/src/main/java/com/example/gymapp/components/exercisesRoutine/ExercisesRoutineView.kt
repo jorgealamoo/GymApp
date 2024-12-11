@@ -3,7 +3,6 @@ package com.example.gymapp.components.exercisesRoutine
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -65,6 +63,7 @@ fun ExerciseRoutineView(
     var exercisesList by remember { mutableStateOf<List<Map<String, Map<String, Int>>>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var isCompleted by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         try {
@@ -77,7 +76,6 @@ fun ExerciseRoutineView(
 
                 val filteredExercises = routineTableState
                     .filter { (_, details) ->
-                        // Verifica si la categoría coincide
                         val category = details.getOrNull(0) as? String ?: ""
                         Log.d("FirebaseData", "Category: $category")
                         category == routineName
@@ -93,6 +91,11 @@ fun ExerciseRoutineView(
 
                 exercisesList = filteredExercises
                 Log.d("FirebaseData", "Filtered Exercises: $exercisesList")
+
+                val routineDetails = routineTableState.values.firstOrNull { details ->
+                    (details.getOrNull(0) as? String) == routineName
+                }
+                isCompleted = routineDetails?.getOrNull(2) as? Boolean ?: false
             } else {
                 errorMessage = "No data found for Week1"
             }
@@ -223,8 +226,17 @@ fun ExerciseRoutineView(
                 }
 
                 Button(
-                    onClick = { println("Completed") },
-                    colors = ButtonDefaults.buttonColors(containerColor = GymRed),
+                    onClick = {
+                        if (!isCompleted) {
+                            isCompleted = true
+                            navController.navigate(AppScreens.RoutineTableScreen.route)
+                        } else {
+                            isCompleted = false
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (!isCompleted) GymRed else White
+                    ),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -233,8 +245,8 @@ fun ExerciseRoutineView(
                         .padding(10.dp, 0.dp, 10.dp, 20.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.complete),
-                        color = White,
+                        text = if (!isCompleted) stringResource(R.string.complete) else stringResource(R.string.completed),
+                        color = if (!isCompleted) White else GymRed,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
                     )
