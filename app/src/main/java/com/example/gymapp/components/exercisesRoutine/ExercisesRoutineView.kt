@@ -242,12 +242,12 @@ fun ExerciseRoutineView(
                                     val result = FirebaseUtils.updateIsCompletedInRoutineTable("Week1", routineName, isCompleted)
                                     if (result) {
                                         Log.d("ExerciseRoutineView", "isCompleted actualizado correctamente para $routineName")
+                                        navController.navigate(AppScreens.RoutineTableScreen.route)
                                     } else {
                                         Log.e("ExerciseRoutineView", "Error al actualizar isCompleted para $routineName")
                                     }
                                 }
                             }
-                            navController.navigate(AppScreens.RoutineTableScreen.route)
                         } else {
                             isCompleted = false
                             selectedRoutineName?.let { routineName ->

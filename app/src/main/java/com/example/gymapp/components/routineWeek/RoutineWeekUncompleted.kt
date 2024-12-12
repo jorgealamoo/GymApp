@@ -39,38 +39,9 @@ fun RoutineWeekUncompleted(
 ){
     val weekColor = if (onProgression) GymRed else Black
 
-    Row(
-        modifier = Modifier
-            .size(305.dp, 135.dp)
-            .clip(RoundedCornerShape(20.dp))
-            .background(White.copy(0.6f)),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.height(180.dp)
-        ) {
-            // Línea vertical
-            Box(
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .height(40.dp)
-                    .width(3.dp)
-                    .background(GymRed)
-            )
+    val allDaysCompleted = exercises.all { it.second }
 
-            Spacer(modifier = Modifier.height(5.dp))
-
-            Text(
-                text = stringResource(R.string.week) + " $weekDay",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = weekColor,
-                modifier = Modifier
-                    .rotateVertically()
-            )
-        }
-
-        Spacer(modifier = Modifier.width(15.dp))
+    if (allDaysCompleted) {
 
         exercises.forEachIndexed { index, exercisePair ->
             if (index < 5) {
@@ -91,23 +62,61 @@ fun RoutineWeekUncompleted(
                 Spacer(modifier = Modifier.width(10.dp))
             }
         }
-    }
-}
+        // RoutineWeekCompleted()
+    } else {
+        Row(
+            modifier = Modifier
+                .size(305.dp, 135.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .background(White.copy(0.6f)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.height(180.dp)
+            ) {
+                // Línea vertical
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .height(40.dp)
+                        .width(3.dp)
+                        .background(GymRed)
+                )
 
-/*
-@Composable
-@Preview
-fun RoutineWeekUncompletedPreview(){
-    RoutineWeekUncompleted(
-        weekDay = 1,
-        exercises = listOf(
-            "legs" to false,
-            "legs" to true,
-            "legs" to false,
-            "legs" to true,
-            "legs" to false
-        ),
-        onProgression = true
-    )
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Text(
+                    text = stringResource(R.string.week) + " $weekDay",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = weekColor,
+                    modifier = Modifier
+                        .rotateVertically()
+                )
+            }
+
+            Spacer(modifier = Modifier.width(15.dp))
+
+            exercises.forEachIndexed { index, exercisePair ->
+                if (index < 5) {
+                    val (exerciseName, isCompleted) = exercisePair
+
+                    RoutineDay(
+                        dayOfWeek = index + 1,
+                        exerciseImage = viewModel.getRoutinesByName(exerciseName).routineIcon,
+                        exercise = viewModel.getRoutinesByName(exerciseName).routineString,
+                        completed = isCompleted,
+                        exercisesList = exercisesList,
+                        navController = navController,
+                        routineName = exerciseName
+                    )
+                }
+
+                if (index != exercises.lastIndex && index < 4) {
+                    Spacer(modifier = Modifier.width(10.dp))
+                }
+            }
+        }
+    }
+
 }
- */
