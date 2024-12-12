@@ -161,6 +161,33 @@ object FirebaseUtils{
         }
     }
 
+    suspend fun getDocumentField(collection: String, documentId: String, field: String): String? {
+        return try {
+            // Obtener el documento
+            val documentSnapshot = firestore
+                .collection(collection)
+                .document(documentId)
+                .get()
+                .await()
+
+            // Obtener el campo específico si existe
+            if (documentSnapshot.exists()) {
+                val value = documentSnapshot.get(field)
+
+                val documentData = value
+                val json = Gson().toJson(documentData)
+
+                json
+            } else {
+                Log.w("FirebaseUtils", "El documento no existe: $documentId")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseUtils", "Error al obtener el campo: ${e.message}")
+            null
+        }
+    }
+
     // Modificar un campo de un documento
     suspend fun updateField(collection: String, documentId: String, field: String, value: Any): Boolean {
         return try {
@@ -203,14 +230,14 @@ object FirebaseUtils{
         }
     }
 
-    suspend fun activitySuscribe(arrayField: String, value: Any): Boolean {
+    suspend fun activitySubscribe(value: Any): Boolean {
         return try {
             val user = auth.currentUser
                 ?: throw IllegalStateException("Authentication error. Please log in again")
 
             firestore.collection("Users")
                 .document(user.uid)
-                .update("SuscribeActivity.$arrayField", FieldValue.arrayUnion(value))
+                .update("SubscribeActivity", FieldValue.arrayUnion(value))
                 .await()
             true
         } catch (e: Exception) {
@@ -219,15 +246,14 @@ object FirebaseUtils{
         }
     }
 
-    suspend fun activityUnsuscribe(arrayField: String, value: Any): Boolean {
+    suspend fun activityUnsubscribe(value: Any): Boolean {
         return try {
-            // Usamos arrayRemove para eliminar un valor del array dentro del Map
             val user = auth.currentUser
                 ?: throw IllegalStateException("Authentication error. Please log in again")
 
             firestore.collection("Users")
                 .document(user.uid)
-                .update("SuscribeActivity.$arrayField", FieldValue.arrayRemove(value))
+                .update("SuscribeActivity", FieldValue.arrayRemove(value))
                 .await()
             true
         } catch (e: Exception) {

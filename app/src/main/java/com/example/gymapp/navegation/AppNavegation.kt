@@ -8,11 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.gymapp.components.activityInfo.ActivityInfoView
-import androidx.navigation.navArgument
 import com.example.gymapp.components.exercisesRoutine.ExerciseRoutineView
 import com.example.gymapp.ui.Activities.Activity
 import com.example.gymapp.ui.home.Home
 import com.example.gymapp.ui.login.Login
+import com.example.gymapp.ui.myclasses.MyClasses
 import com.example.gymapp.ui.pointsStore.PointsStore
 import com.example.gymapp.ui.profile.Profile
 import com.example.gymapp.ui.routineTable.RoutineTable
@@ -64,6 +64,9 @@ fun AppNavegation(){
             val dia = backStackEntry.arguments?.getString("dia") // Recibir `dia` como String
             val id = backStackEntry.arguments?.getString("id")     // Recibir `id` como Int
             ActivityInfoView(navController = navController, dia = dia, id = id)
+        }
+        composable(route = AppScreens.MyClassesScreen.route) {
+            MyClasses(navController = navController)
         }
     }
 }

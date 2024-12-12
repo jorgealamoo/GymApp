@@ -17,5 +17,6 @@ sealed class AppScreens(val route: String) {
     object PointsStoreScreen: AppScreens("points_store_screen")
     object RoutineTableScreen: AppScreens("routine_table_screen")
     object ActivityInfoScreen : AppScreens("activity_info_screen/{dia}/{id}")
+    object MyClassesScreen: AppScreens("my_classes_screen")
 
 }

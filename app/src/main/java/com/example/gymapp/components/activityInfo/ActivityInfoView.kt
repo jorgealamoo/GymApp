@@ -220,13 +220,13 @@ fun ActivityInfoView(navController: NavHostController,
 suspend fun unSubscribeActivity(id: String, day: String, ocupado: Int) {
     val ocupado = ocupado - 1
     FirebaseUtils.updateField(day,id,"Ocupado",ocupado)
-    FirebaseUtils.activityUnsuscribe(day,id)
+    FirebaseUtils.activityUnsubscribe(id)
 }
 
 suspend fun subscribeToActivity(day: String, id: String, ocupado: Int) {
     val ocupado = ocupado + 1
     FirebaseUtils.updateField(day,id,"Ocupado",ocupado)
-    FirebaseUtils.activitySuscribe(day,id)
+    FirebaseUtils.activitySubscribe(id)
 }
 
 suspend fun takeExercise(day: String, id: String): String? {

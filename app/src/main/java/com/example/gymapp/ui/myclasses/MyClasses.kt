@@ -1,4 +1,4 @@
-package com.example.gymapp.ui.Activities
+package com.example.gymapp.ui.myclasses
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -26,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.gymapp.R
 import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.activityCard.ActivityCardView
@@ -37,12 +39,12 @@ import com.example.gymapp.components.week.WeekDaysSelector
 import com.example.gymapp.ui.login.LoadingScreen
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
+import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 
-
 @Composable
-fun Activity(navController: NavController, modifier: Modifier = Modifier){
+fun MyClasses(navController: NavHostController) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -56,12 +58,12 @@ fun Activity(navController: NavController, modifier: Modifier = Modifier){
         Scaffold(
             topBar = {
                 Header(
-                    title = R.string.Activity,
+                    title = R.string.MyActivity,
                     onMenuClick = { scope.launch { drawerState.open() } }
                 )
             },
             content = { paddingValues ->
-                ContentActivity(navController = navController,
+                ContentMyclasses(navController = navController,
                     modifier = Modifier.padding(paddingValues))
             },
             bottomBar = {
@@ -70,13 +72,16 @@ fun Activity(navController: NavController, modifier: Modifier = Modifier){
         )
     }
 }
+
 @Composable
-fun ContentActivity(navController: NavController, modifier: Modifier = Modifier) {
+fun ContentMyclasses(navController: NavHostController, modifier: Modifier) {
     val scrollState = rememberScrollState()
     var selectedDay by remember { mutableStateOf("M") }
     var classDataJson by remember { mutableStateOf<String?>(null) }
+    var exerciseDataJson by remember { mutableStateOf<String?>(null) }
     var isLoading by remember { mutableStateOf(true) }
 
+    var user = PreferencesManager.getUser(navController.context)
     val dayMap = mapOf(
         "M" to "Monday",
         "T" to "Tuesday",
@@ -86,12 +91,19 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
         "S" to "Saturday",
     )
 
-    LaunchedEffect(selectedDay) {
-        isLoading = true
-        classDataJson = FirebaseUtils.fetchClassForDay(dayMap[selectedDay].toString())
+    LaunchedEffect(Unit) {
+        if (user != null) {
+            Log.d("TAG", "ContentMyclasses: ${user.uid}")
+            classDataJson = FirebaseUtils.getDocumentField("Users", user.uid.toString(), "SubscribeActivity")
+        }
         isLoading = false
     }
 
+    LaunchedEffect(selectedDay) {
+        isLoading = true
+        exerciseDataJson = FirebaseUtils.fetchClassForDay(dayMap[selectedDay].toString())
+        isLoading = false
+    }
 
     Box(
         modifier = modifier
@@ -106,9 +118,10 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
-        if (isLoading){
+        if(isLoading){
             LoadingScreen()
         }else {
+            Log.d("TAG", "${classDataJson}")
             Column(
                 modifier = Modifier.verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -120,39 +133,46 @@ fun ContentActivity(navController: NavController, modifier: Modifier = Modifier)
                     onDaySelected = { day -> selectedDay = day }
                 )
 
-
-                InsertAllActivity(classDataJson, dayMap[selectedDay].toString(), navController)
+                InsertMyActivity(exerciseDataJson, classDataJson, dayMap[selectedDay].toString(), navController)
             }
         }
     }
-
 }
 
-
 @Composable
-fun InsertAllActivity(classDataJson: String?, selectedDay: String, navController: NavController,) {
-    if(classDataJson.isNullOrEmpty()) return
+fun InsertMyActivity(exerciseDataJson: String?, classDataJson: String?, selectedDay: String, navController: NavHostController) {
+        if(classDataJson.isNullOrEmpty()) return
+        if(exerciseDataJson.isNullOrEmpty()) return
 
-    val jsonArray = JSONArray(classDataJson)
+    val jsonArray = JSONArray(exerciseDataJson)
     for (i in 0 until jsonArray.length()) {
-        val document = jsonArray.getJSONObject(i)
-        val documentId = document.getString("documentId")
-        val data = document.getJSONObject("data")
+        if ( classDataJson.contains(jsonArray.getJSONObject(i).getString("documentId").toString())) {
 
-        val hora = data.getString("Hora")
-        val disponibilidad = data.getString("Disponibilidad")
-        val ocupado = data.getString("Ocupado")
-        val name = data.getString("Name")
+            val document = jsonArray.getJSONObject(i)
+            val documentId = document.getString("documentId")
+            val data = document.getJSONObject("data")
 
-        ActivityCardView(
-            hora = hora,
-            totalCapacity = disponibilidad,
-            exerciseClass = name,
-            available = ocupado,
-            dia = selectedDay,
-            id = documentId,
-            navController = navController
-        )
+            val hora = data.getString("Hora")
+            val disponibilidad = data.getString("Disponibilidad")
+            val ocupado = data.getString("Ocupado")
+            val name = data.getString("Name")
+
+            ActivityCardView(
+                hora = hora,
+                totalCapacity = disponibilidad,
+                exerciseClass = name,
+                available = ocupado,
+                dia = selectedDay,
+                id = documentId,
+                navController = navController
+            )
+        }
     }
 }
 
+@Preview
+@Composable
+fun PreviewMyClasses(){
+    val navController = rememberNavController()
+    MyClasses(navController)
+}

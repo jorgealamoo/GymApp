@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -50,7 +51,8 @@ fun DrawerContent(
             .fillMaxHeight()
             .width(250.dp)
             .background(Color.White)
-            .padding(top = 70.dp)
+            .navigationBarsPadding()
+            .statusBarsPadding()
     ) {
            dataLink(
                textId = R.string.routine_table,
@@ -60,7 +62,11 @@ fun DrawerContent(
                textId = R.string.points_store,
                onClick = { navController.navigate("points_store_screen") }
            )
-           dataLink()
+           dataLink(
+               textId = R.string.MyActivity,
+               onClick = { navController.navigate("my_classes_screen") }
+           )
+
         Spacer(modifier = Modifier.weight(1f))
            dataLink(
                textId = R.string.logOut,
@@ -71,15 +77,7 @@ fun DrawerContent(
                },
                 color = GymRed
            )
-        TextButton(
-            onClick = {"TODO"},
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(R.string.loren_ipsum),
-                fontSize = 20.sp,
-                )
-        }
+
     }
 }
 
