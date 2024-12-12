@@ -42,27 +42,15 @@ fun RoutineWeekUncompleted(
     val allDaysCompleted = exercises.all { it.second }
 
     if (allDaysCompleted) {
-
+        var exercisesStrings: List<Int> = emptyList()
         exercises.forEachIndexed { index, exercisePair ->
             if (index < 5) {
-                val (exerciseName, isCompleted) = exercisePair
-
-                RoutineDay(
-                    dayOfWeek = index + 1,
-                    exerciseImage = viewModel.getRoutinesByName(exerciseName).routineIcon,
-                    exercise = viewModel.getRoutinesByName(exerciseName).routineString,
-                    completed = isCompleted,
-                    exercisesList = exercisesList,
-                    navController = navController,
-                    routineName = exerciseName
-                )
-            }
-
-            if (index != exercises.lastIndex && index < 4) {
-                Spacer(modifier = Modifier.width(10.dp))
+                val (exerciseName, _) = exercisePair
+                exercisesStrings += viewModel.getRoutinesByName(exerciseName).routineString
             }
         }
-        // RoutineWeekCompleted()
+        RoutineWeekCompleted(weekDay = weekDay, exercisesStrings = exercisesStrings)
+
     } else {
         Row(
             modifier = Modifier

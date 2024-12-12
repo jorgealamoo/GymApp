@@ -29,11 +29,7 @@ import com.example.gymapp.ui.theme.White
 @Composable
 fun RoutineWeekCompleted(
     weekDay: Int = 0,
-    day1Exercise: Int,
-    day2Exercise: Int,
-    day3Exercise: Int,
-    day4Exercise: Int,
-    day5Exercise: Int,
+    exercisesStrings: List<Int> = emptyList()
 ){
     Row(
         modifier = Modifier
@@ -68,23 +64,15 @@ fun RoutineWeekCompleted(
 
         Spacer(modifier = Modifier.width(15.dp))
 
-        RoutineDayCompletedWeek(dayOfWeek = 1, exercise = day1Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompletedWeek(dayOfWeek = 2, exercise = day2Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompletedWeek(dayOfWeek = 3, exercise = day3Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompletedWeek(dayOfWeek = 4, exercise = day4Exercise)
-
-        Spacer(modifier = Modifier.width(10.dp))
-
-        RoutineDayCompletedWeek(dayOfWeek = 5, exercise = day5Exercise)
+        exercisesStrings.forEachIndexed { index, exerciseString ->
+            RoutineDayCompletedWeek(
+                dayOfWeek = index + 1,
+                exercise = exerciseString
+            )
+            if (index != exercisesStrings.lastIndex && index < 4) {
+                Spacer(modifier = Modifier.width(10.dp))
+            }
+        }
     }
 }
 
@@ -103,6 +91,7 @@ fun Modifier.rotateVertically(clockwise: Boolean = true): Modifier {
     return rotate then adjustBounds
 }
 
+/*
 @Composable
 @Preview
 fun RoutineWeekCompletedPreview(){
@@ -115,3 +104,4 @@ fun RoutineWeekCompletedPreview(){
         day5Exercise = R.string.back,
     )
 }
+*/
