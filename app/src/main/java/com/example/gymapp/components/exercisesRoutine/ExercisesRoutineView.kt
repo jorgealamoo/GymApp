@@ -26,6 +26,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +50,7 @@ import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 @Composable
 fun ExerciseRoutineView(
@@ -64,6 +66,9 @@ fun ExerciseRoutineView(
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var isCompleted by remember { mutableStateOf(false) }
+    var selectedRoutineName by remember { mutableStateOf<String?>(null) }
+    val coroutineScope = rememberCoroutineScope()
+
 
     LaunchedEffect(Unit) {
         try {
@@ -75,9 +80,12 @@ fun ExerciseRoutineView(
                 Log.d("FirebaseData", "Parsed Data: $routineTableState")
 
                 val filteredExercises = routineTableState
-                    .filter { (_, details) ->
+                    .filter { (routineKey, details) ->
                         val category = details.getOrNull(0) as? String ?: ""
-                        Log.d("FirebaseData", "Category: $category")
+                        if (category == routineName) {
+                            selectedRoutineName = routineKey // Guarda el nombre de la rutina seleccionada
+                        }
+                        Log.d("FirebaseData", "Category: $category Routine: $selectedRoutineName")
                         category == routineName
                     }
                     .flatMap { (_, details) ->
@@ -229,9 +237,29 @@ fun ExerciseRoutineView(
                     onClick = {
                         if (!isCompleted) {
                             isCompleted = true
+                            selectedRoutineName?.let { routineName ->
+                                coroutineScope.launch {
+                                    val result = FirebaseUtils.updateIsCompletedInRoutineTable("Week1", routineName, isCompleted)
+                                    if (result) {
+                                        Log.d("ExerciseRoutineView", "isCompleted actualizado correctamente para $routineName")
+                                    } else {
+                                        Log.e("ExerciseRoutineView", "Error al actualizar isCompleted para $routineName")
+                                    }
+                                }
+                            }
                             navController.navigate(AppScreens.RoutineTableScreen.route)
                         } else {
                             isCompleted = false
+                            selectedRoutineName?.let { routineName ->
+                                coroutineScope.launch {
+                                    val result = FirebaseUtils.updateIsCompletedInRoutineTable("Week1", routineName, isCompleted)
+                                    if (result) {
+                                        Log.d("ExerciseRoutineView", "isCompleted actualizado correctamente para $routineName")
+                                    } else {
+                                        Log.e("ExerciseRoutineView", "Error al actualizar isCompleted para $routineName")
+                                    }
+                                }
+                            }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(

@@ -236,5 +236,46 @@ object FirebaseUtils{
         }
     }
 
+    suspend fun updateIsCompletedInRoutineTable(weekName: String, routineName: String, isCompleted: Boolean): Boolean {
+        return try {
+            val user = auth.currentUser
+                ?: throw IllegalStateException("Authentication error. Please log in again")
+
+            val routineDocument = firestore.collection("Users")
+                .document(user.uid)
+                .collection("RoutineTable")
+                .document(weekName)
+
+            val snapshot = routineDocument.get().await()
+
+            if (snapshot.exists()) {
+                val routineTable = snapshot.data?.toMutableMap()
+                if (routineTable != null && routineTable.containsKey(routineName)) {
+                    val routineData = routineTable[routineName] as? ArrayList<Any>
+                    if (routineData != null && routineData.size > 2) {
+                        routineData[2] = isCompleted
+                        routineTable[routineName] = routineData
+
+                        routineDocument.set(routineTable).await()
+                        Log.d("FirebaseUtils", "isCompleted actualizado correctamente para $routineName")
+                        true
+                    } else {
+                        Log.e("FirebaseUtils", "Estructura inválida para la rutina: $routineName")
+                        false
+                    }
+                } else {
+                    Log.e("FirebaseUtils", "La rutina $routineName no existe en la tabla de rutinas")
+                    false
+                }
+            } else {
+                Log.e("FirebaseUtils", "El documento de la tabla de rutinas no existe: $weekName")
+                false
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseUtils", "Error al actualizar isCompleted en $routineName: ${e.message}")
+            false
+        }
+    }
+
 
 }
