@@ -213,12 +213,10 @@ object FirebaseUtils{
                 .document(user.uid).get().await()
 
             if (userDocument.exists()) {
-                val daysMap = userDocument.data?.get("SuscribeActivity") as? Map<String, List<String>>
+                val activityMap = userDocument.data?.get("SubscribeActivity").toString()
 
 
-                val dayList = daysMap?.get(dayOfWeek)
-
-                if (dayList != null && dayList.contains(id)) {
+                if (activityMap != null && activityMap.contains(id)) {
                     return true
                 }
             }
@@ -253,7 +251,7 @@ object FirebaseUtils{
 
             firestore.collection("Users")
                 .document(user.uid)
-                .update("SuscribeActivity", FieldValue.arrayRemove(value))
+                .update("SubscribeActivity", FieldValue.arrayRemove(value))
                 .await()
             true
         } catch (e: Exception) {
