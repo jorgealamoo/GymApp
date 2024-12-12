@@ -136,7 +136,7 @@ fun ContentHome(modifier: Modifier = Modifier,
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Card("${user?.points}")
+            Card("${user?.points}", navController)
             Spacer(modifier = Modifier.height(20.dp))
             Column(
                 modifier = Modifier
