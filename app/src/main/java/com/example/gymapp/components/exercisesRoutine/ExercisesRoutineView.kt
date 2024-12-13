@@ -25,6 +25,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -50,6 +52,7 @@ import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -70,7 +73,14 @@ fun ExerciseRoutineView(
     var isCompleted by remember { mutableStateOf(false) }
     var selectedRoutineName by remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
+    val systemUiController = rememberSystemUiController()
 
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = Color.Transparent,
+            darkIcons = true
+        )
+    }
 
     LaunchedEffect(Unit) {
         try {

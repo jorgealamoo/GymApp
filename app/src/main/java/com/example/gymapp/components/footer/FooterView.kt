@@ -17,16 +17,30 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.gymapp.R
 import com.example.gymapp.navegation.AppScreens
 import com.example.gymapp.ui.theme.GymRed
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun Footer(navController: NavController, modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
+    val systemUiController = rememberSystemUiController()
+    val navigationBarColor = Color(0xFF9885)
+
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = true
+        )
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()

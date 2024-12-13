@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +52,7 @@ import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 
@@ -66,6 +68,14 @@ fun ActivityInfoView(navController: NavHostController,
     var exerciseData by remember { mutableStateOf<Exercise?>(null) }
     var isAdded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val systemUiController = rememberSystemUiController()
+
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = Color.Transparent,
+            darkIcons = true
+        )
+    }
 
     LaunchedEffect(dia, id) {
         isAdded = FirebaseUtils.isIdInDayList(dia.toString(), id.toString())

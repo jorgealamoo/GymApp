@@ -63,6 +63,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
     implementation ("com.google.zxing:core:3.5.1")
     implementation ("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation( "com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
     implementation(libs.firebase.firestore.ktx)
     testImplementation(libs.junit)
