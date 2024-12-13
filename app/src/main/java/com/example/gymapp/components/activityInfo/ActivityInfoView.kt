@@ -171,7 +171,7 @@ fun ActivityInfoView(navController: NavHostController,
                             isAdded = false
                         }
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                    colors = ButtonDefaults.buttonColors(containerColor = White),
                     shape = RoundedCornerShape(10.dp),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -181,7 +181,7 @@ fun ActivityInfoView(navController: NavHostController,
                 ) {
                     Text(
                         text = stringResource(R.string.reserved),
-                        color = White,
+                        color = GymRed,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.Bold
                     )
