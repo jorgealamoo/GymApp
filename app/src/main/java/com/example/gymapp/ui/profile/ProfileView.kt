@@ -2,6 +2,7 @@ package com.example.gymapp.ui.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -127,6 +128,7 @@ fun ContentProfile(
             Spacer(modifier = Modifier.height(25.dp))
 
             Text(
+                modifier = Modifier.clickable { /* Te lleva a una página web imaginaria */ },
                 text = stringResource(R.string.change_password),
                 fontSize = 22.sp,
                 textDecoration = TextDecoration.Underline
