@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -30,6 +31,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.example.gymapp.R
 import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.footer.Footer
@@ -69,6 +73,7 @@ fun Profile(navController: NavController){
         )
     }
 }
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ContentProfile(
     profileImage: Int = R.drawable.user,
@@ -81,6 +86,7 @@ fun ContentProfile(
             .fillMaxSize()
             .background(White)
     ) {
+
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
@@ -97,7 +103,7 @@ fun ContentProfile(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            UserInfo(user?.name.toString(), user?.surname.toString(), profileImage)
+            UserInfo(user?.name.toString(), user?.surname.toString(), user?.image.toString())
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -126,8 +132,9 @@ fun ContentProfile(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: Int = R.drawable.user) {
+fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: String) {
     val maxSurnameLength = 15
     val displayedSurname = if (surname.length > maxSurnameLength) {
         surname.take(maxSurnameLength) + "..."
@@ -163,10 +170,15 @@ fun UserInfo(name: String = "Name", surname: String = "Surname", profileImage: I
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Image(
-            painter = painterResource(profileImage),
+        GlideImage(
+            model = "${profileImage}",
             contentDescription = stringResource(R.string.profile_image),
-            modifier = Modifier.size(125.dp).padding(0.dp, 0.dp, 25.dp)
+            modifier = Modifier
+                .size(125.dp)
+                .padding(0.dp, 0.dp, 25.dp)
+                .clip(CircleShape),
+            failure = placeholder(R.drawable.user)
         )
+
     }
 }

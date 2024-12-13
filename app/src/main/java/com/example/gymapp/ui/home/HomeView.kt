@@ -1,5 +1,6 @@
 package com.example.gymapp.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -43,7 +45,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.integration.compose.placeholder
 import com.example.gymapp.R
 import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.card.Card
@@ -86,6 +90,7 @@ fun Home(navController: NavController, modifier: Modifier = Modifier){
 }
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ContentHome(modifier: Modifier = Modifier,
          profileImage: Int = R.drawable.user,
@@ -124,15 +129,15 @@ fun ContentHome(modifier: Modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.width(12.dp))
-
-                Image(
-                    painter = rememberImagePainter(user?.image),
-                    contentDescription = "Profile image",
+                Log.d("MyTAG", "ContentHome: ${user?.image.toString()}")
+                GlideImage(
+                    model = "${user?.image}",
+                    contentDescription = stringResource(R.string.profile_image),
                     modifier = Modifier
                         .size(56.dp)
-                        .clip(CircleShape) // Esto hará la imagen redonda
+                        .clip(CircleShape),
+                    failure = placeholder(profileImage)
                 )
-
 
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(
