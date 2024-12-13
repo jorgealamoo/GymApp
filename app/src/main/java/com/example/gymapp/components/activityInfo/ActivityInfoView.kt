@@ -68,11 +68,13 @@ fun ActivityInfoView(navController: NavHostController,
     var exerciseData by remember { mutableStateOf<Exercise?>(null) }
     var isAdded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+
     val systemUiController = rememberSystemUiController()
+    val navigationBarColor = Color(0xFF9885)
 
     SideEffect {
         systemUiController.setNavigationBarColor(
-            color = Color.Transparent,
+            color = navigationBarColor,
             darkIcons = true
         )
     }

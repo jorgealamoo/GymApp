@@ -74,10 +74,11 @@ fun ExerciseRoutineView(
     var selectedRoutineName by remember { mutableStateOf<String?>(null) }
     val coroutineScope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
+    val navigationBarColor = Color(0xFF9885)
 
     SideEffect {
         systemUiController.setNavigationBarColor(
-            color = Color.Transparent,
+            color = navigationBarColor,
             darkIcons = true
         )
     }
