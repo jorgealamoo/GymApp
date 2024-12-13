@@ -49,7 +49,7 @@ object FirebaseUtils{
                         name = document.getString("name").orEmpty(),
                         surname = document.getString("surname").orEmpty(),
                         email = user.email.orEmpty(),
-                        image = "",
+                        image = document.getString("image").toString(),
                         enrollment = document.getString("enrollment").orEmpty(),
                         expirationEnrollment = document.getString("expirationEnrollment").orEmpty(),
                         birthdate = document.getString("birthdate").orEmpty(),

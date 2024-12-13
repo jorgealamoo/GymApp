@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.gymapp.R
 import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.card.Card
@@ -122,12 +124,16 @@ fun ContentHome(modifier: Modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Spacer(modifier = Modifier.width(12.dp))
+
                 Image(
-                    painter = painterResource(profileImage),
-                    contentDescription = stringResource(R.string.profile_image),
+                    painter = rememberImagePainter(user?.image),
+                    contentDescription = "Profile image",
                     modifier = Modifier
                         .size(56.dp)
+                        .clip(CircleShape) // Esto hará la imagen redonda
                 )
+
+
                 Spacer(modifier = Modifier.width(20.dp))
                 Text(
                     text = "${user?.name} ${user?.surname}",
