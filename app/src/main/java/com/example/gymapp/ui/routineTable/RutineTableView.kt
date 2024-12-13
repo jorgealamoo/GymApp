@@ -153,7 +153,7 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
                     navController = navController
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(17.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 2,
@@ -163,7 +163,7 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
                     navController = navController
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(17.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 3,
@@ -173,7 +173,7 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
                     navController = navController
                 )
 
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(17.dp))
 
                 RoutineWeekUncompleted(
                     weekDay = 4,
