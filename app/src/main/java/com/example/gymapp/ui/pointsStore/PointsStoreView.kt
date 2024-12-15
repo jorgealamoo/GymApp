@@ -1,5 +1,6 @@
 package com.example.gymapp.ui.pointsStore
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,7 +17,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -35,8 +41,11 @@ import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.pointsProductCard.PointsProductCard
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
+import com.example.gymapp.utils.FirebaseUtils
 import com.example.gymapp.utils.PreferencesManager
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 
 @Composable
 fun PointsStore(navController: NavController){
@@ -70,21 +79,17 @@ fun PointsStore(navController: NavController){
 @Composable
 fun ContentPointsStore(
     modifier: Modifier = Modifier,
-    points: Int = 0,
-    productList: List<Int> = listOf(
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum,
-        R.string.loren_ipsum
-    ),
     navController: NavController
 ){
     val user = PreferencesManager.getUser(navController.context)
+    var isLoading by remember { mutableStateOf(true) }
+    var items by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(Unit) {
+        items = FirebaseUtils.fetchDocuments("Catalog")
+        Log.d("Catalog", "ContentPointsStore: ${items}")
+        isLoading = false
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -116,19 +121,31 @@ fun ContentPointsStore(
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            productList.forEach{product ->
-                PointsProductCard(name = product)
-                Spacer(modifier = Modifier.height(15.dp))
-            }
+            addContentToStore(items)
 
         }
     }
 }
 
-/*
+
 @Composable
-@Preview
-fun PointsStorePreview(){
-    ContentPointsStore()
+fun addContentToStore(items: String?) {
+
+    val jsonItems = remember(items) {
+        try {
+            items?.let { JSONArray(it) }
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    jsonItems?.let { array ->
+        for (i in 0 until array.length()) {
+            val jsonObject: JSONObject = array.getJSONObject(i)
+            val name = jsonObject.optString("Name", "Unknown")
+            val price = jsonObject.optString("Price", "0")
+
+            PointsProductCard(name, price)
+        }
+    } ?: return
 }
-*/

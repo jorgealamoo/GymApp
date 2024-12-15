@@ -188,6 +188,23 @@ object FirebaseUtils{
         }
     }
 
+    suspend fun fetchDocuments(collectionName: String): String?{
+        return try {
+            val documentsSnapshot = firestore.collection(collectionName).get().await()
+            if (!documentsSnapshot.isEmpty){
+                val documenList = documentsSnapshot.documents.mapNotNull {
+                    document -> document.data
+                }
+                Gson().toJson(documenList)
+            }else{
+                Log.d("fetchAllDocuments", "No existen documentos en la colección: $collectionName")
+                null
+            }
+        }catch (e: Error){
+            Log.e("fetchAllDocuments", "Error al obtener los documentos: ${e.message}")
+            return null
+        }
+    }
     // Modificar un campo de un documento
     suspend fun updateField(collection: String, documentId: String, field: String, value: Any): Boolean {
         return try {
