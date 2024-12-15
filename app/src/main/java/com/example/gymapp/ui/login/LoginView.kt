@@ -24,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import com.example.gymapp.ui.theme.Black
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 @Composable
@@ -62,11 +64,19 @@ fun Login(navController: NavController) {
     var showModal by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val systemUiController = rememberSystemUiController()
+    val navigationBarColor = Color(0xFFFF9885)
 
+    SideEffect {
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = true
+        )
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(White)
+            .background(Color.White)
             .clickable { keyboardController?.hide() }
     ) {
         Image(

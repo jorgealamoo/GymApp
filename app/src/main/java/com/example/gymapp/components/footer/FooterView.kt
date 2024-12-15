@@ -32,7 +32,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun Footer(navController: NavController, modifier: Modifier = Modifier, iconSize: Dp = 70.dp) {
     val systemUiController = rememberSystemUiController()
-    val navigationBarColor = Color(0xFF9885)
+    val navigationBarColor = Color(0xFFFF9885)
 
     SideEffect {
         systemUiController.setNavigationBarColor(

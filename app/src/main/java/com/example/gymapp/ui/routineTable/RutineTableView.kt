@@ -33,6 +33,7 @@ import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.routineWeek.RoutineWeekUncompleted
+import com.example.gymapp.ui.login.LoadingScreen
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
 import com.google.gson.Gson
@@ -123,13 +124,7 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
 
         if (isLoading) {
             // Mostrar un indicador de carga
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("Loading...")
-            }
+            LoadingScreen()
         } else if (errorMessage != null) {
             // Mostrar el mensaje de error
             Column(
@@ -186,11 +181,3 @@ fun RoutineTableContent(modifier: Modifier = Modifier, navController: NavControl
         }
     }
 }
-
-/*
-@Composable
-@Preview
-fun RoutineTablePreview(){
-    RoutineTableContent()
-}
- */

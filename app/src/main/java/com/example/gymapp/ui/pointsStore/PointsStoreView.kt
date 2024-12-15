@@ -3,6 +3,7 @@ package com.example.gymapp.ui.pointsStore
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +40,7 @@ import com.example.gymapp.components.DrawerContent.DrawerContent
 import com.example.gymapp.components.footer.Footer
 import com.example.gymapp.components.header.Header
 import com.example.gymapp.components.pointsProductCard.PointsProductCard
+import com.example.gymapp.ui.login.LoadingScreen
 import com.example.gymapp.ui.theme.GymRed
 import com.example.gymapp.ui.theme.White
 import com.example.gymapp.utils.FirebaseUtils
@@ -84,10 +86,10 @@ fun ContentPointsStore(
     val user = PreferencesManager.getUser(navController.context)
     var isLoading by remember { mutableStateOf(true) }
     var items by remember { mutableStateOf<String?>(null) }
+    val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
         items = FirebaseUtils.fetchDocuments("Catalog")
-        Log.d("Catalog", "ContentPointsStore: ${items}")
         isLoading = false
     }
     Box(
@@ -103,26 +105,29 @@ fun ContentPointsStore(
                 .matchParentSize()
                 .graphicsLayer(alpha = 0.6f)
         )
+        if(isLoading){
+            LoadingScreen()
+        }else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(40.dp))
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(40.dp))
+                Text(
+                    text = stringResource(R.string.your_points) + " ${user?.points}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = GymRed
+                )
 
-            Text(
-                text = stringResource(R.string.your_points) + " ${user?.points}",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold,
-                color = GymRed
-            )
+                Spacer(modifier = Modifier.height(25.dp))
 
-            Spacer(modifier = Modifier.height(25.dp))
+                addContentToStore(items)
 
-            addContentToStore(items)
-
+            }
         }
     }
 }
@@ -146,6 +151,7 @@ fun addContentToStore(items: String?) {
             val price = jsonObject.optString("Price", "0")
 
             PointsProductCard(name, price)
+            Spacer(modifier = Modifier.height(20.dp))
         }
     } ?: return
 }
