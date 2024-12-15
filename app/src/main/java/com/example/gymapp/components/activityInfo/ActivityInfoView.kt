@@ -145,7 +145,6 @@ fun ActivityInfoView(navController: NavHostController,
                     }
                 }
 
-                /**/
                 Text(
                     text = stringResource(R.string.hora) + exerciseJsonObject?.getString("Hora").toString(),
                     fontSize = 25.sp,
@@ -199,7 +198,7 @@ fun ActivityInfoView(navController: NavHostController,
                     )
                 }
             }else{
-                if ((exerciseJsonObject?.getString("Disponibilidad")?.toInt() ?: 0) >= (exerciseJsonObject?.getString("Ocupado")?.toInt() ?: 0)){
+                if ((exerciseJsonObject?.getString("Disponibilidad")?.toInt() ?: 0) > (exerciseJsonObject?.getString("Ocupado")?.toInt() ?: 0)){
                     Button(
                         onClick = {
                             scope.launch {
