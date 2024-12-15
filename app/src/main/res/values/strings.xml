@@ -12,7 +12,7 @@
     <string name="login">Login</string>
     <string name="gym_name">Gym Name</string>
     <string name="points">Points</string>
-    <string name="spots">spots available</string>
+    <string name="spots">spots filled</string>
     <string name="title">Title</string>
     <string name="email">Email</string>
     <string name="birthdate">Birthdate</string>

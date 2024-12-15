@@ -75,7 +75,7 @@ fun ActivityCardView (
                 )
                 if(totalCapacity.toInt() > available.toInt()) {
                     Text(
-                        text = (totalCapacity + "/" + available
+                        text = (available + "/" + totalCapacity
                                 + " " + stringResource(id = R.string.spots)),
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,

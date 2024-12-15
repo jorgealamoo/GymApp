@@ -203,6 +203,7 @@ fun RoundTextField(
             focusedContainerColor = White,
             focusedPlaceholderColor = White
         ),
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        singleLine = true
     )
 }
